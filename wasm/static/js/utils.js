@@ -70,7 +70,7 @@ function getConnectedGamepadMask() {
     }
   }
 
-  console.log('%c[utils.js, getConnectedGamepadMask]', 'color: gray;', 'Detected: ' + count + ' gamepads.');
+  console.log('%c[utils.js, getConnectedGamepadMask]', 'color: gray;', 'Detected: ' + count + ' gamepads. Mask: 0x' + mask.toString(16));
   return mask;
 }
 
