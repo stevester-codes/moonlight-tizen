@@ -242,8 +242,8 @@ void MoonlightInstance::PollGamepads() {
       comboTriggered = false;
     }
 
-    // Check if the mouse emulation switch is checked
-    if (mouseEmulationSwitch) {
+    // Check if the mouse emulation switch is checked for the mouse-owner controller
+    if (mouseEmulationSwitch && controllerNumber == mouseOwnerControllerNumber) {
       static auto activatePressTime = std::chrono::steady_clock::now();
       // Toggle mouse emulation on and off based on how long the PLAY/START button is pressed
       if (buttonFlags & PLAY_FLAG) {
@@ -269,7 +269,7 @@ void MoonlightInstance::PollGamepads() {
         // If the PLAY/START button is not pressed, reset PLAY/START press time to the current time
         activatePressTime = std::chrono::steady_clock::now();
       }
-    } else {
+    } else if (!mouseEmulationSwitch && controllerNumber == mouseOwnerControllerNumber) {
       // Deactivate mouse emulation if the mouse emulation switch is unchecked
       mouseEmulationActive = false;
     }
