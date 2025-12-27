@@ -227,7 +227,10 @@ const Views = {
     up: function() {
       // If there are more rows behind, then go to the previous row
       if (this.view.prevCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        const current = this.view.current();
+        if (current && typeof current.focus === 'function') {
+          current.focus();
+        }
       } else {
         // If there are no more rows, navigate to the HostsNav view
         Navigation.change(Views.HostsNav);
@@ -241,16 +244,25 @@ const Views = {
     down: function() {
       // If there are more rows after, then go to the next row
       if (this.view.nextCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        const current = this.view.current();
+        if (current && typeof current.focus === 'function') {
+          current.focus();
+        }
       }
     },
     left: function() {
       this.view.prevCard(5);
-      document.getElementById(this.view.current()).focus();
+      const current = this.view.current();
+      if (current && typeof current.focus === 'function') {
+        current.focus();
+      }
     },
     right: function() {
       this.view.nextCard(5);
-      document.getElementById(this.view.current()).focus();
+      const current = this.view.current();
+      if (current && typeof current.focus === 'function') {
+        current.focus();
+      }
     },
     select: function() {
       const currentItem = this.view.current();

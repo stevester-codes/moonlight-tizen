@@ -161,15 +161,30 @@ void MoonlightInstance::PollGamepads() {
     return;
   }
 
-  // Create a mask for active gamepads
-  const auto activeGamepadMask = GetActiveGamepadMask(numGamepads);
+  short activeGamepadMask = 0;
+  int activeControllerCount = 0;
+
+  for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
+    EmscriptenGamepadEvent gamepad;
+    if (emscripten_get_gamepad_status(gamepadID, &gamepad) != EMSCRIPTEN_RESULT_SUCCESS || !gamepad.connected) {
+      continue;
+    }
+
+    if (gamepad.timestamp == 0 && gamepad.numAxes == 0 && gamepad.numButtons == 0) {
+      continue;
+    }
+
+    if (activeControllerCount < 16) {
+      activeGamepadMask |= (1 << activeControllerCount);
+      ++activeControllerCount;
+    }
+  }
 
   // Prevent repeated trigger while the button combo is held down
   static bool comboTriggered = false;
 
   // Iterate through connected gamepads and process their input
-  for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
-    emscripten_sample_gamepad_data();
+  for (int gamepadID = 0, controllerNumber = 0; gamepadID < numGamepads; ++gamepadID) {
     EmscriptenGamepadEvent gamepad;
     // See logic in getConnectedGamepadMask() (utils.js)
     // These must stay in sync!
@@ -180,10 +195,11 @@ void MoonlightInstance::PollGamepads() {
       continue;
     }
 
-    if (gamepad.timestamp == 0) {
-      // On some platforms, Tizen returns "connected" gamepads that really 
-      // aren't, so timestamp stays at zero. To work around this, we'll only
-      // count gamepads that have a non-zero timestamp in our controller index.
+    if (gamepad.timestamp == 0 && gamepad.numAxes == 0 && gamepad.numButtons == 0) {
+      continue;
+    }
+
+    if (controllerNumber >= 16) {
       continue;
     }
 
@@ -299,9 +315,11 @@ void MoonlightInstance::PollGamepads() {
     } else {
       // If mouse emulation is inactive, then send gamepad input to the desired handler (acts as a gamepad)
       LiSendMultiControllerEvent(
-        gamepadID, activeGamepadMask, buttonFlags, leftTrigger,
+        controllerNumber, activeGamepadMask, buttonFlags, leftTrigger,
         rightTrigger, leftStickX, leftStickY, rightStickX, rightStickY);
     }
+
+    ++controllerNumber;
   }
 }
 
