@@ -1,3 +1,23 @@
+(() => {
+  const _get = document.getElementById.bind(document);
+  document.getElementById = (id) => {
+    if (!id) {
+      return null;
+    }
+    if (typeof id === 'object' && id.nodeType === 1) {
+      return id;
+    }
+    return _get(String(id));
+  };
+})();
+
+function safeFocus(idOrEl) {
+  const el = document.getElementById(idOrEl);
+  if (el && typeof el.focus === 'function') {
+    el.focus();
+  }
+}
+
 const hoveredClassName = 'hovered';
 
 function markElement(element) {
@@ -227,30 +247,27 @@ const Views = {
     up: function() {
       // If there are more rows behind, then go to the previous row
       if (this.view.prevCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       } else {
         // If there are no more rows, navigate to the HostsNav view
         Navigation.change(Views.HostsNav);
         // Set focus on the first navigation item in HostsNav view when transitioning from Hosts view
-        const navItem = document.getElementById(Views.HostsNav.view.current());
-        if (navItem) {
-          navItem.focus();
-        }
+        safeFocus(Views.HostsNav.view.current());
       }
     },
     down: function() {
       // If there are more rows after, then go to the next row
       if (this.view.nextCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
     left: function() {
       this.view.prevCard(5);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
       this.view.nextCard(5);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     select: function() {
       const currentItem = this.view.current();
