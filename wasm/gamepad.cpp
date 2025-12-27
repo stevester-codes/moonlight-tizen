@@ -23,6 +23,7 @@ bool rumbleFeedbackSwitch = false;
 // Flags for gamepad to track mouse emulation state
 bool mouseEmulationSwitch = false;
 bool mouseEmulationActive = false;
+static int mouseOwnerControllerNumber = 0;
 
 // Flags for gamepad to track face buttons state
 bool flipABfaceButtonsSwitch = false;
@@ -161,15 +162,36 @@ void MoonlightInstance::PollGamepads() {
     return;
   }
 
-  // Create a mask for active gamepads
-  const auto activeGamepadMask = GetActiveGamepadMask(numGamepads);
+  short activeGamepadMask = 0;
+  int activeControllerCount = 0;
+
+  for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
+    EmscriptenGamepadEvent gamepad;
+    if (emscripten_get_gamepad_status(gamepadID, &gamepad) != EMSCRIPTEN_RESULT_SUCCESS || !gamepad.connected) {
+      continue;
+    }
+
+    if (gamepad.timestamp == 0 && gamepad.numAxes == 0 && gamepad.numButtons == 0) {
+      continue;
+    }
+
+    if (activeControllerCount < 16) {
+      activeGamepadMask |= (1 << activeControllerCount);
+      ++activeControllerCount;
+    }
+  }
+
+  if (activeControllerCount == 0) {
+    mouseOwnerControllerNumber = -1;
+  } else if (mouseOwnerControllerNumber < 0 || mouseOwnerControllerNumber >= activeControllerCount) {
+    mouseOwnerControllerNumber = 0;
+  }
 
   // Prevent repeated trigger while the button combo is held down
   static bool comboTriggered = false;
 
   // Iterate through connected gamepads and process their input
-  for (int gamepadID = 0; gamepadID < numGamepads; ++gamepadID) {
-    emscripten_sample_gamepad_data();
+  for (int gamepadID = 0, controllerNumber = 0; gamepadID < numGamepads; ++gamepadID) {
     EmscriptenGamepadEvent gamepad;
     // See logic in getConnectedGamepadMask() (utils.js)
     // These must stay in sync!
@@ -180,10 +202,11 @@ void MoonlightInstance::PollGamepads() {
       continue;
     }
 
-    if (gamepad.timestamp == 0) {
-      // On some platforms, Tizen returns "connected" gamepads that really 
-      // aren't, so timestamp stays at zero. To work around this, we'll only
-      // count gamepads that have a non-zero timestamp in our controller index.
+    if (gamepad.timestamp == 0 && gamepad.numAxes == 0 && gamepad.numButtons == 0) {
+      continue;
+    }
+
+    if (controllerNumber >= 16) {
       continue;
     }
 
@@ -219,8 +242,8 @@ void MoonlightInstance::PollGamepads() {
       comboTriggered = false;
     }
 
-    // Check if the mouse emulation switch is checked
-    if (mouseEmulationSwitch) {
+    // Check if the mouse emulation switch is checked for the mouse-owner controller
+    if (mouseEmulationSwitch && controllerNumber == mouseOwnerControllerNumber) {
       static auto activatePressTime = std::chrono::steady_clock::now();
       // Toggle mouse emulation on and off based on how long the PLAY/START button is pressed
       if (buttonFlags & PLAY_FLAG) {
@@ -246,13 +269,13 @@ void MoonlightInstance::PollGamepads() {
         // If the PLAY/START button is not pressed, reset PLAY/START press time to the current time
         activatePressTime = std::chrono::steady_clock::now();
       }
-    } else {
+    } else if (!mouseEmulationSwitch && controllerNumber == mouseOwnerControllerNumber) {
       // Deactivate mouse emulation if the mouse emulation switch is unchecked
       mouseEmulationActive = false;
     }
 
-    // If mouse emulation is active, then send mouse input to the desired handler (acts as a mouse)
-    if (mouseEmulationActive) {
+    // If mouse emulation is active for this controller, then send mouse input to the desired handler (acts as a mouse)
+    if (mouseEmulationActive && controllerNumber == mouseOwnerControllerNumber) {
       // Left Stick values are mapped to horizontal and vertical mouse movements
       const float baseMouseSpeed = 10.0f;
       const float leftStickMagnitude = std::sqrt(leftStickX * leftStickX + leftStickY * leftStickY) / std::numeric_limits<short>::max();
@@ -299,9 +322,11 @@ void MoonlightInstance::PollGamepads() {
     } else {
       // If mouse emulation is inactive, then send gamepad input to the desired handler (acts as a gamepad)
       LiSendMultiControllerEvent(
-        gamepadID, activeGamepadMask, buttonFlags, leftTrigger,
+        controllerNumber, activeGamepadMask, buttonFlags, leftTrigger,
         rightTrigger, leftStickX, leftStickY, rightStickX, rightStickY);
     }
+
+    ++controllerNumber;
   }
 }
 
