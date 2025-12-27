@@ -1,3 +1,16 @@
+(() => {
+  const _get = document.getElementById.bind(document);
+  document.getElementById = (id) => {
+    if (!id) {
+      return null;
+    }
+    if (typeof id === 'object' && id.nodeType === 1) {
+      return id;
+    }
+    return _get(String(id));
+  };
+})();
+
 const hoveredClassName = 'hovered';
 
 function markElement(element) {

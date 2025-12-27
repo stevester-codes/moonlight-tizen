@@ -23,6 +23,7 @@ bool rumbleFeedbackSwitch = false;
 // Flags for gamepad to track mouse emulation state
 bool mouseEmulationSwitch = false;
 bool mouseEmulationActive = false;
+static int mouseOwnerControllerNumber = 0;
 
 // Flags for gamepad to track face buttons state
 bool flipABfaceButtonsSwitch = false;
@@ -180,6 +181,12 @@ void MoonlightInstance::PollGamepads() {
     }
   }
 
+  if (activeControllerCount == 0) {
+    mouseOwnerControllerNumber = -1;
+  } else if (mouseOwnerControllerNumber < 0 || mouseOwnerControllerNumber >= activeControllerCount) {
+    mouseOwnerControllerNumber = 0;
+  }
+
   // Prevent repeated trigger while the button combo is held down
   static bool comboTriggered = false;
 
@@ -267,8 +274,8 @@ void MoonlightInstance::PollGamepads() {
       mouseEmulationActive = false;
     }
 
-    // If mouse emulation is active, then send mouse input to the desired handler (acts as a mouse)
-    if (mouseEmulationActive) {
+    // If mouse emulation is active for this controller, then send mouse input to the desired handler (acts as a mouse)
+    if (mouseEmulationActive && controllerNumber == mouseOwnerControllerNumber) {
       // Left Stick values are mapped to horizontal and vertical mouse movements
       const float baseMouseSpeed = 10.0f;
       const float leftStickMagnitude = std::sqrt(leftStickX * leftStickX + leftStickY * leftStickY) / std::numeric_limits<short>::max();
