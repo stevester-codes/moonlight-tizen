@@ -1,6 +1,28 @@
 function remoteControllerHandler(e) {
   const keyCode = e.keyCode;
 
+  const activeEl = document.activeElement;
+  if (activeEl && activeEl.tagName === 'SELECT') {
+    // Let arrows and enter/ok behave natively for the open select
+    if (
+      keyCode === tvKey.KEY_UP ||
+      keyCode === tvKey.KEY_DOWN ||
+      keyCode === tvKey.KEY_LEFT ||
+      keyCode === tvKey.KEY_RIGHT ||
+      keyCode === tvKey.KEY_ENTER ||
+      keyCode === tvKey.KEY_REMOTE_ENTER
+    ) {
+      return;
+    }
+    if (keyCode === tvKey.KEY_RETURN || keyCode === tvKey.KEY_EXIT) {
+      e.preventDefault();
+      e.stopPropagation();
+      activeEl.blur();
+      return;
+    }
+    return;
+  }
+
   switch (keyCode) {
     case tvKey.KEY_UP:
       // Navigate in the up direction

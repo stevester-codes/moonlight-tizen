@@ -56,18 +56,24 @@ function getConnectedGamepadMask() {
         continue;
       }
 
-      if (gamepad.timestamp == 0) {
+      var axesLen = (gamepad.axes && gamepad.axes.length) ? gamepad.axes.length : 0;
+      var btnLen = (gamepad.buttons && gamepad.buttons.length) ? gamepad.buttons.length : 0;
+
+      if (gamepad.timestamp === 0 && axesLen === 0 && btnLen === 0) {
         // On some platforms, Tizen returns "connected" gamepads that really 
         // aren't, so timestamp stays at zero. To work around this, we'll only
-        // count gamepads that have a non-zero timestamp in our controller index.
+        // count gamepads that have inputs in our controller index.
         continue;
       }
 
-      mask |= 1 << count++;
+      if (count < 16) {
+        mask |= 1 << count;
+        count++;
+      }
     }
   }
 
-  console.log('%c[utils.js, getConnectedGamepadMask]', 'color: gray;', 'Detected: ' + count + ' gamepads.');
+  console.log('%c[utils.js, getConnectedGamepadMask]', 'color: gray;', 'Detected: ' + count + ' gamepads. Mask: 0x' + mask.toString(16));
   return mask;
 }
 
