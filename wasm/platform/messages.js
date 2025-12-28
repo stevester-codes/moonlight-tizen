@@ -72,6 +72,27 @@ var handlePromiseMessage = function(callbackId, type, msg) {
  */
 function handleMessage(msg) {
   console.log('%c[messages.js, handleMessage]', 'color: gray;', 'Message data: ', msg);
+
+  function getNthActiveGamepad(n) {
+    const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+    let k = 0;
+    for (const gp of pads) {
+      if (!gp || !gp.connected) {
+        continue;
+      }
+      const axesLen = (gp.axes && gp.axes.length) ? gp.axes.length : 0;
+      const btnLen = (gp.buttons && gp.buttons.length) ? gp.buttons.length : 0;
+      if (gp.timestamp === 0 && axesLen === 0 && btnLen === 0) {
+        continue;
+      }
+      if (k === n) {
+        return gp;
+      }
+      k++;
+    }
+    return null;
+  }
+
   // If it's a recognized event, notify the appropriate function
   if (msg.indexOf('streamTerminated: ') === 0) {
     // Remove the on-screen overlays
@@ -165,8 +186,7 @@ function handleMessage(msg) {
     const gamepadIdx = parseInt(eventData[0]);
     const weakMagnitude = parseFloat(eventData[1]);
     const strongMagnitude = parseFloat(eventData[2]);
-    const gamepads = navigator.getGamepads();
-    const gamepad = gamepads[gamepadIdx];
+    const gamepad = getNthActiveGamepad(gamepadIdx);
     // Check if the gamepad exists and if it has a vibrationActuator associated with it
     if (gamepad && gamepad.vibrationActuator) {
       console.log('%c[messages.js, handleMessage]', 'color: gray;', 'Playing rumble on gamepad ' + gamepadIdx + ' with weak magnitude ' + weakMagnitude + ' and strong magnitude ' + strongMagnitude + '...');

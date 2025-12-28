@@ -1,6 +1,17 @@
 function remoteControllerHandler(e) {
   const keyCode = e.keyCode;
 
+  const activeEl = document.activeElement;
+  if (activeEl && activeEl.tagName === 'SELECT') {
+    if (keyCode === tvKey.KEY_RETURN) {
+      e.preventDefault();
+      e.stopPropagation();
+      activeEl.blur();
+      return;
+    }
+    return;
+  }
+
   switch (keyCode) {
     case tvKey.KEY_UP:
       // Navigate in the up direction
