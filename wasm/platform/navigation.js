@@ -40,7 +40,16 @@ function clickTarget(target) {
 
 function safeFocus(idOrEl) {
   const el = resolveElement(idOrEl);
-  if (el && typeof el.focus === 'function') {
+  if (!el) return;
+  // Avoid focusing native selects (Tizen d-pad changes selection at the platform layer)
+  if (el.tagName === 'SELECT') {
+    const listener = document.getElementById('listener');
+    if (listener && typeof listener.focus === 'function') {
+      listener.focus();
+    }
+    return;
+  }
+  if (typeof el.focus === 'function') {
     el.focus();
   }
 }
@@ -50,6 +59,12 @@ function safeBlur(idOrEl) {
   if (el && typeof el.blur === 'function') {
     el.blur();
   }
+}
+
+function currentIdOf(target) {
+  const el = resolveElement(target);
+  if (el && el.id) return el.id;
+  return typeof target === 'string' ? target : '';
 }
 
 function focusSettingsCategory(categoryKey) {
@@ -171,22 +186,43 @@ function isPopupActive(id) {
   return !!(container && container.classList.contains('is-visible'));
 }
 
+function closeAnyVisibleMdlMenu() {
+  const visible = document.querySelectorAll('.mdl-menu__container.is-visible');
+  if (!visible || visible.length === 0) {
+    return false;
+  }
+
+  visible.forEach((c) => {
+    const menu = c.querySelector('.mdl-menu');
+    if (menu && menu.MaterialMenu && typeof menu.MaterialMenu.hide === 'function') {
+      menu.MaterialMenu.hide();
+    }
+  });
+
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, which: 27, bubbles: true }));
+  if (document.body) {
+    document.body.click();
+  }
+  return true;
+}
+
 function closePopup(id) {
   if (isPopupActive(id)) {
     // MDL menus close when the opener is toggled again
     clickTarget(id);
     return true;
   }
-  return false;
+  return closeAnyVisibleMdlMenu();
 }
 
 function changeIpAddressFieldValue(adjust) {
-  const currentItem = this.view.current();
-  if (currentItem.startsWith('ipAddressField')) {
-    const digitElement = document.getElementById(currentItem);
+  const currentId = currentIdOf(this.view.current());
+  if (currentId.startsWith('ipAddressField')) {
+    const digitElement = document.getElementById(currentId);
     let currentValue = parseInt(digitElement.value, 10);
     currentValue = (currentValue + adjust + 256) % 256;
     digitElement.value = currentValue;
+    digitElement.dispatchEvent(new Event('change', { bubbles: true }));
   }
 }
 
@@ -453,8 +489,8 @@ const Views = {
       safeFocus(this.view.current());
     },
     right: function() {
-      // Move into the current category's options
-      changeToCategoryOptions();
+      this.view.next();
+      safeFocus(this.view.current());
     },
     select: function() {
       const currentItem = resolveElement(this.view.current());
@@ -498,8 +534,8 @@ const Views = {
       }
     }),
     up: function() {
-      const currentItem = this.view.current();
-      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentItem.startsWith('ipAddressField')) {
+      const currentId = currentIdOf(this.view.current());
+      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentId.startsWith('ipAddressField')) {
         changeIpAddressFieldValue.call(this, 1);
       } else {
         this.view.index = 0;
@@ -507,28 +543,28 @@ const Views = {
       }
     },
     down: function() {
-      const currentItem = this.view.current();
-      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentItem.startsWith('ipAddressField')) {
+      const currentId = currentIdOf(this.view.current());
+      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentId.startsWith('ipAddressField')) {
         changeIpAddressFieldValue.call(this, -1);
-      } else if (currentItem === 'ipAddressTextInput') {
+      } else if (currentId === 'ipAddressTextInput') {
         this.view.index = 1; // continueAddHost in single-field mode
         safeFocus(this.view.current());
-      } else if (currentItem === 'continueAddHost' || currentItem === 'cancelAddHost') {
+      } else if (currentId === 'continueAddHost' || currentId === 'cancelAddHost') {
         this.view.index = 0;
         // Avoid auto-focus to prevent keyboard popup; Select will focus when needed
       }
     },
     left: function() {
       if (document.getElementById('ipAddressFieldModeSwitch').checked) {
-        const currentItem = this.view.current();
-        if (currentItem.startsWith('ipAddressField') &&
-            currentItem !== 'continueAddHost' &&
-            currentItem !== 'cancelAddHost') {
+        const currentId = currentIdOf(this.view.current());
+        if (currentId.startsWith('ipAddressField') &&
+            currentId !== 'continueAddHost' &&
+            currentId !== 'cancelAddHost') {
           // Remove focus from any currently focused item element
-          safeBlur(currentItem);
+          safeBlur(currentId);
           this.view.prev();
           safeFocus(this.view.current());
-        } else if (currentItem === 'cancelAddHost') {
+        } else if (currentId === 'cancelAddHost') {
           this.view.prev();
           safeFocus(this.view.current());
         } else {
@@ -542,16 +578,16 @@ const Views = {
     },
     right: function() {
       if (document.getElementById('ipAddressFieldModeSwitch').checked) {
-        const currentItem = this.view.current();
-        if (currentItem.startsWith('ipAddressField') && currentItem !== 'ipAddressField4') {
+        const currentId = currentIdOf(this.view.current());
+        if (currentId.startsWith('ipAddressField') && currentId !== 'ipAddressField4') {
           // Remove focus from any currently focused item element
-          safeBlur(currentItem);
+          safeBlur(currentId);
           this.view.next();
           safeFocus(this.view.current());
-        } else if (currentItem === 'continueAddHost') {
+        } else if (currentId === 'continueAddHost') {
           this.view.next();
           safeFocus(this.view.current());
-        } else if (currentItem === 'cancelAddHost') {
+        } else if (currentId === 'cancelAddHost') {
           this.view.index = 0;
           safeFocus(this.view.current());
         } else {
@@ -794,9 +830,7 @@ const Views = {
       clickTarget(this.view.current());
     },
     back: function() {
-      // Navigate to the SettingsNav view
-      Navigation.change(Views.SettingsNav);
-      safeFocus(Views.SettingsNav.view.current());
+      clickTarget('goBackBtn');
     },
     press: function() {},
     switch: function() {
