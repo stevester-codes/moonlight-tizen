@@ -485,6 +485,7 @@ const Views = {
     },
     enter: function() {
       mark(this.view.current());
+      setIpTextEditing(false);
     },
     leave: function() {
       unmark(this.view.current());
@@ -512,8 +513,9 @@ const Views = {
       safeFocus(this.view.current());
     },
     right: function() {
-      this.view.next();
-      safeFocus(this.view.current());
+      // Return to Settings content without pushing a new view
+      Navigation.change(Views.Settings);
+      safeFocus(Views.Settings.view.current());
     },
     select: function() {
       clickTarget(this.view.current());
