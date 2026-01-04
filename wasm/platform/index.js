@@ -1124,6 +1124,10 @@ function showSettingsMode() {
 
   stopPollingHosts();
   Navigation.start();
+
+  // Ensure the IP address field mode toggle is visible when entering Settings
+  $('#ipAddressFieldModeMenu').show();
+  $('#ipAddressFieldModeSwitch').closest('.mdl-switch').show();
 }
 
 // Show the Settings list
