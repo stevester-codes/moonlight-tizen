@@ -284,7 +284,11 @@ function showHostsMode() {
   $('#listener').removeClass('fullscreen');
 
   Navigation.start();
-  Navigation.pop();
+  if (Navigation.popToRoot) {
+    Navigation.popToRoot();
+  } else {
+    Navigation.reset(Views.Hosts);
+  }
   startPollingHosts();
 }
 

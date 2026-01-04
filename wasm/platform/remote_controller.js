@@ -20,8 +20,8 @@ function remoteControllerHandler(e) {
       break;
     case tvKey.KEY_ENTER:
     case tvKey.KEY_REMOTE_ENTER:
-      // Select the current item
-      Navigation.select();
+      // Activate the current item (same path for remote and gamepad)
+      Navigation.accept();
       break;
     case tvKey.KEY_RETURN:
       // Go back or cancel the operation
