@@ -284,7 +284,11 @@ function showHostsMode() {
   $('#listener').removeClass('fullscreen');
 
   Navigation.start();
-  Navigation.pop();
+  if (Navigation.popToRoot) {
+    Navigation.popToRoot();
+  } else {
+    Navigation.reset(Views.Hosts);
+  }
   startPollingHosts();
 }
 
@@ -1124,6 +1128,10 @@ function showSettingsMode() {
 
   stopPollingHosts();
   Navigation.start();
+
+  // Ensure the IP address field mode toggle is visible when entering Settings
+  $('#ipAddressFieldModeMenu').removeClass('hide-container').css('display', 'block');
+  $('#ipAddressFieldModeSwitch').closest('.mdl-switch').css('display', 'inline-flex').show();
 }
 
 // Show the Settings list
