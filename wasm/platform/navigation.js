@@ -160,7 +160,9 @@ function markElementById(id) {
 
 function mark(value) {
   const el = resolveElement(value);
-  markElement(el);
+  if (el) {
+    markElement(el);
+  }
 }
 
 function unmarkElement(element) {
@@ -176,7 +178,9 @@ function unmarkElementById(id) {
 
 function unmark(value) {
   const el = resolveElement(value);
-  unmarkElement(el);
+  if (el) {
+    unmarkElement(el);
+  }
 }
 
 function isPopupActive(id) {
