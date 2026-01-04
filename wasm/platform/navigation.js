@@ -1,3 +1,169 @@
+function isHTMLElement(el) {
+  return (typeof HTMLElement !== 'undefined') && el instanceof HTMLElement;
+}
+
+function resolveElement(target) {
+  if (!target) return null;
+  if (isHTMLElement(target)) return target;
+  if (typeof target === 'string') return document.getElementById(target);
+  if (target && target[0] && target[0].nodeType === 1) return target[0];
+  if (target && target.nodeType === 1) return target;
+  if (target && target.element && isHTMLElement(target.element)) return target.element;
+  if (target && target.el && isHTMLElement(target.el)) return target.el;
+  if (target && typeof target.id === 'string') return document.getElementById(target.id);
+  return null;
+}
+
+function resolveClickable(target) {
+  const el = resolveElement(target);
+  if (!el) return null;
+  // In MDL menus, click the menu item itself so the menu closes properly
+  const menuItem = el.closest ? el.closest('.mdl-menu__item') : null;
+  if (menuItem && typeof menuItem.click === 'function') {
+    return menuItem;
+  }
+  if (el.tagName === 'SELECT') return el; // allow native picker to open via click, no child search
+
+  if (el.querySelector) {
+    const child = el.querySelector('input[type="checkbox"], .mdl-switch__input, [role="switch"], button, [aria-pressed]');
+    if (child && typeof child.click === 'function') {
+      return child;
+    }
+  }
+  if (typeof el.click === 'function') {
+    return el;
+  }
+  return null;
+}
+
+function clickTarget(target) {
+  const el = resolveClickable(target);
+  if (el) {
+    el.click();
+  }
+}
+
+function safeFocus(idOrEl) {
+  const el = resolveElement(idOrEl);
+  if (!el) return;
+  // Avoid focusing native selects (Tizen d-pad changes selection at the platform layer)
+  if (el.tagName === 'SELECT') {
+    const listener = document.getElementById('listener');
+    if (listener && typeof listener.focus === 'function') {
+      listener.focus();
+    }
+    return;
+  }
+  if (typeof el.focus === 'function') {
+    el.focus();
+  }
+}
+
+function safeBlur(idOrEl) {
+  const el = resolveElement(idOrEl);
+  if (el && typeof el.blur === 'function') {
+    el.blur();
+  }
+}
+
+function currentIdOf(target) {
+  const el = resolveElement(target);
+  if (el && el.id) return el.id;
+  return typeof target === 'string' ? target : '';
+}
+
+function setIpTextEditing(enabled) {
+  const el = document.getElementById('ipAddressTextInput');
+  if (!el) return;
+  el.readOnly = !enabled;
+  if (enabled) {
+    el.focus();
+    if (typeof el.click === 'function') el.click();
+  } else {
+    el.blur();
+    const listener = document.getElementById('listener');
+    if (listener && typeof listener.focus === 'function') listener.focus();
+  }
+}
+
+function focusSettingsCategory(categoryKey) {
+  const categories = ['basicSettings', 'interfaceSettings', 'hostSettings', 'inputSettings', 'audioSettings', 'videoSettings', 'aboutSettings'];
+  const targetIndex = categories.indexOf(categoryKey);
+  if (targetIndex >= 0) {
+    const settingsArray = Views.Settings.view.func();
+    unmark(settingsArray[Views.Settings.view.index]);
+    Views.Settings.view.index = targetIndex;
+    mark(settingsArray[Views.Settings.view.index]);
+    safeFocus(settingsArray[Views.Settings.view.index]);
+  }
+}
+
+function focusSettingsOptionsForCurrentCategory() {
+  const currentCategoryEl = Views.Settings.view.current();
+  const categoryKey = currentCategoryEl && currentCategoryEl.dataset ? currentCategoryEl.dataset.category : null;
+  switch (categoryKey) {
+    case 'basicSettings':
+      safeFocus(Views.BasicSettings.view.current());
+      break;
+    case 'interfaceSettings':
+      safeFocus(Views.InterfaceSettings.view.current());
+      break;
+    case 'hostSettings':
+      safeFocus(Views.HostSettings.view.current());
+      break;
+    case 'inputSettings':
+      safeFocus(Views.InputSettings.view.current());
+      break;
+    case 'audioSettings':
+      safeFocus(Views.AudioSettings.view.current());
+      break;
+    case 'videoSettings':
+      safeFocus(Views.VideoSettings.view.current());
+      break;
+    case 'aboutSettings':
+      safeFocus(Views.AboutSettings.view.current());
+      break;
+    default:
+      break;
+  }
+}
+
+function changeToCategoryOptions() {
+  const currentCategoryEl = resolveElement(Views.Settings.view.current());
+  if (!currentCategoryEl || !currentCategoryEl.dataset) {
+    return;
+  }
+  // Ensure the category's DOM handlers run (shows the correct pane)
+  clickTarget(currentCategoryEl);
+
+  switch (currentCategoryEl.dataset.category) {
+    case 'basicSettings':
+      Navigation.change(Views.BasicSettings);
+      break;
+    case 'interfaceSettings':
+      Navigation.change(Views.InterfaceSettings);
+      break;
+    case 'hostSettings':
+      Navigation.change(Views.HostSettings);
+      break;
+    case 'inputSettings':
+      Navigation.change(Views.InputSettings);
+      break;
+    case 'audioSettings':
+      Navigation.change(Views.AudioSettings);
+      break;
+    case 'videoSettings':
+      Navigation.change(Views.VideoSettings);
+      break;
+    case 'aboutSettings':
+      Navigation.change(Views.AboutSettings);
+      break;
+    default:
+      break;
+  }
+  focusSettingsOptionsForCurrentCategory();
+}
+
 const hoveredClassName = 'hovered';
 
 function markElement(element) {
@@ -12,10 +178,9 @@ function markElementById(id) {
 }
 
 function mark(value) {
-  if (typeof value === 'string') {
-    markElementById(value);
-  } else if (typeof value === 'object') {
-    markElement(value);
+  const el = resolveElement(value);
+  if (el) {
+    markElement(el);
   }
 }
 
@@ -31,29 +196,56 @@ function unmarkElementById(id) {
 }
 
 function unmark(value) {
-  if (typeof value === 'string') {
-    unmarkElementById(value);
-  } else if (typeof value === 'object') {
-    unmarkElement(value);
+  const el = resolveElement(value);
+  if (el) {
+    unmarkElement(el);
   }
 }
 
 function isPopupActive(id) {
-  return document
-    .getElementById(id)
-    .parentNode
-    .children[3]
-    .classList
-    .contains('is-visible');
+  const el = resolveElement(id);
+  const parent = el ? el.parentNode : null;
+  const container = parent && parent.querySelector ? parent.querySelector('.mdl-menu__container') : null;
+  return !!(container && container.classList.contains('is-visible'));
+}
+
+function closeAnyVisibleMdlMenu() {
+  const visible = document.querySelectorAll('.mdl-menu__container.is-visible');
+  if (!visible || visible.length === 0) {
+    return false;
+  }
+
+  visible.forEach((c) => {
+    const menu = c.querySelector('.mdl-menu');
+    if (menu && menu.MaterialMenu && typeof menu.MaterialMenu.hide === 'function') {
+      menu.MaterialMenu.hide();
+    }
+  });
+
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, which: 27, bubbles: true }));
+  if (document.body) {
+    document.body.click();
+  }
+  return true;
+}
+
+function closePopup(id) {
+  if (isPopupActive(id)) {
+    // MDL menus close when the opener is toggled again
+    clickTarget(id);
+    return true;
+  }
+  return closeAnyVisibleMdlMenu();
 }
 
 function changeIpAddressFieldValue(adjust) {
-  const currentItem = this.view.current();
-  if (currentItem.startsWith('ipAddressField')) {
-    const digitElement = document.getElementById(currentItem);
+  const currentId = currentIdOf(this.view.current());
+  if (currentId.startsWith('ipAddressField')) {
+    const digitElement = document.getElementById(currentId);
     let currentValue = parseInt(digitElement.value, 10);
     currentValue = (currentValue + adjust + 256) % 256;
     digitElement.value = currentValue;
+    digitElement.dispatchEvent(new Event('change', { bubbles: true }));
   }
 }
 
@@ -227,45 +419,42 @@ const Views = {
     up: function() {
       // If there are more rows behind, then go to the previous row
       if (this.view.prevCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       } else {
         // If there are no more rows, navigate to the HostsNav view
         Navigation.change(Views.HostsNav);
         // Set focus on the first navigation item in HostsNav view when transitioning from Hosts view
-        const navItem = document.getElementById(Views.HostsNav.view.current());
-        if (navItem) {
-          navItem.focus();
-        }
+        safeFocus(Views.HostsNav.view.current());
       }
     },
     down: function() {
       // If there are more rows after, then go to the next row
       if (this.view.nextCardRow(5)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
     left: function() {
       this.view.prevCard(5);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
       this.view.nextCard(5);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     select: function() {
       const currentItem = this.view.current();
-      if (currentItem.id === 'addHostContainer') {
-        currentItem.click();
+      if (currentItem && currentItem.id === 'addHostContainer') {
+        clickTarget(currentItem);
       } else {
-        currentItem.children[0].click();
+        clickTarget(currentItem ? currentItem.children[0] : currentItem);
       }
     },
     accept: function() {
       const currentItem = this.view.current();
-      if (currentItem.id === 'addHostContainer') {
-        currentItem.click();
+      if (currentItem && currentItem.id === 'addHostContainer') {
+        clickTarget(currentItem);
       } else {
-        currentItem.children[0].click();
+        clickTarget(currentItem ? currentItem.children[0] : currentItem);
       }
     },
     back: function() {
@@ -273,24 +462,30 @@ const Views = {
       exitAppDialog();
     },
     press: function() {
-      const currentItem = this.view.current();
-      if (currentItem.id !== 'addHostContainer') {
-        currentItem.children[1].focus();
+      const currentItem = resolveElement(this.view.current());
+      if (currentItem && currentItem.id !== 'addHostContainer') {
+        const menuButton = currentItem.children ? currentItem.children[1] : null;
+        safeFocus(menuButton);
         // Show the Host Menu dialog and push the view
-        setTimeout(() => currentItem.children[1].click(), 600);
+        setTimeout(() => clickTarget(menuButton), 600);
       }
     },
     switch: function() {
-      const currentItem = this.view.current();
+      const currentItem = resolveElement(this.view.current());
+      if (!currentItem) {
+        return;
+      }
       if (currentItem.id === 'addHostContainer') {
-        currentItem.focus();
+        safeFocus(currentItem);
       } else {
         this.view.currentCardRow(5);
-        currentItem.children[0].focus();
+        const hostCard = currentItem.children ? currentItem.children[0] : null;
+        safeFocus(hostCard ? hostCard : currentItem);
       }
     },
     enter: function() {
       mark(this.view.current());
+      setIpTextEditing(false);
     },
     leave: function() {
       unmark(this.view.current());
@@ -307,38 +502,36 @@ const Views = {
     up: function() {},
     down: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Navigate to the Hosts view
       Navigation.change(Views.Hosts);
       // Set focus on the first navigation item in Hosts view when transitioning from HostsNav view
-      const navItem = document.getElementById(Views.Hosts.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Hosts.view.current());
     },
     left: function() {
       this.view.prev();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
-      this.view.next();
-      document.getElementById(this.view.current()).focus();
+      // Return to Settings content without pushing a new view
+      Navigation.change(Views.Settings);
+      safeFocus(Views.Settings.view.current());
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Navigate to the Hosts view
       Navigation.change(Views.Hosts);
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -356,65 +549,108 @@ const Views = {
       }
     }),
     up: function() {
-      if (document.getElementById('ipAddressFieldModeSwitch').checked) {
+      const currentId = currentIdOf(this.view.current());
+      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentId.startsWith('ipAddressField')) {
         changeIpAddressFieldValue.call(this, 1);
+      } else {
+        this.view.index = 0;
+        safeFocus(this.view.current());
       }
     },
     down: function() {
-      if (document.getElementById('ipAddressFieldModeSwitch').checked) {
+      const currentId = currentIdOf(this.view.current());
+      if (document.getElementById('ipAddressFieldModeSwitch').checked && currentId.startsWith('ipAddressField')) {
         changeIpAddressFieldValue.call(this, -1);
+      } else if (currentId === 'ipAddressTextInput') {
+        this.view.index = 1; // continueAddHost in single-field mode
+        safeFocus(this.view.current());
+      } else if (currentId === 'continueAddHost' || currentId === 'cancelAddHost') {
+        this.view.index = 0;
+        safeFocus(this.view.current());
       }
     },
     left: function() {
       if (document.getElementById('ipAddressFieldModeSwitch').checked) {
-        const currentItem = this.view.current();
-        if (currentItem.startsWith('ipAddressField') && currentItem !== 'continueAddHost' || currentItem !== 'cancelAddHost') {
+        const currentId = currentIdOf(this.view.current());
+        if (currentId.startsWith('ipAddressField') &&
+            currentId !== 'continueAddHost' &&
+            currentId !== 'cancelAddHost') {
           // Remove focus from any currently focused item element
-          document.getElementById(currentItem).blur();
-          document.getElementById(this.view.prev());
+          safeBlur(currentId);
+          this.view.prev();
+          safeFocus(this.view.current());
+        } else if (currentId === 'cancelAddHost') {
+          this.view.prev();
+          safeFocus(this.view.current());
         } else {
-          document.getElementById(this.view.prev()).focus();
+          this.view.prev();
+          safeFocus(this.view.current());
         }
       } else {
         this.view.prev();
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
     right: function() {
       if (document.getElementById('ipAddressFieldModeSwitch').checked) {
-        const currentItem = this.view.current();
-        if (currentItem.startsWith('ipAddressField') && currentItem !== 'ipAddressField4') {
+        const currentId = currentIdOf(this.view.current());
+        if (currentId.startsWith('ipAddressField') && currentId !== 'ipAddressField4') {
           // Remove focus from any currently focused item element
-          document.getElementById(currentItem).blur();
-          document.getElementById(this.view.next());
+          safeBlur(currentId);
+          this.view.next();
+          safeFocus(this.view.current());
+        } else if (currentId === 'continueAddHost') {
+          this.view.next();
+          safeFocus(this.view.current());
+        } else if (currentId === 'cancelAddHost') {
+          this.view.index = 0;
+          safeFocus(this.view.current());
         } else {
-          document.getElementById(this.view.next()).focus();
+          this.view.next();
+          safeFocus(this.view.current());
         }
       } else {
         this.view.next();
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
     select: function() {
-      this.view.current().click();
+      const currentId = currentIdOf(this.view.current());
+      if (currentId === 'ipAddressTextInput') {
+        setIpTextEditing(true);
+        return;
+      }
+      setIpTextEditing(false);
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      const currentId = currentIdOf(this.view.current());
+      if (currentId === 'ipAddressTextInput') {
+        setIpTextEditing(true);
+        return;
+      }
+      setIpTextEditing(false);
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelAddHost').click();
+      const active = document.activeElement;
+      if (active && active.id === 'ipAddressTextInput' && !active.readOnly) {
+        setIpTextEditing(false);
+        return;
+      }
+      clickTarget('cancelAddHost');
     },
     press: function() {
-      document.getElementById('ipAddressFieldModeSwitch').click();
+      clickTarget('ipAddressFieldModeSwitch');
     },
     switch: function() {
       const currentItem = this.view.current();
       if (currentItem === 'continueAddHost' || currentItem === 'cancelAddHost') {
         // Set focus only on the Continue or Cancel button element
-        document.getElementById(currentItem).focus();
+        safeFocus(currentItem);
       } else {
         // Remove focus from any other focused item element
-        document.getElementById(currentItem).blur();
+        safeBlur(currentItem);
       }
     },
     enter: function() {
@@ -429,21 +665,23 @@ const Views = {
       'cancelPairing'
     ]),
     up: function() {
-      document.getElementById('cancelPairing').blur();
+      safeBlur("cancelPairing");
     },
     down: function() {
-      document.getElementById('cancelPairing').focus();
+      safeFocus("cancelPairing");
     },
     left: function() {},
-    right: function() {},
+    right: function() {
+      clickTarget(this.view.current());
+    },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelPairing').click();
+      clickTarget('cancelPairing');
     },
     press: function() {},
     switch: function() {},
@@ -461,26 +699,33 @@ const Views = {
     }),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
-    right: function() {},
+    left: function() {
+      // Move back to the settings category list
+      Navigation.change(Views.SettingsNav);
+      safeFocus(Views.SettingsNav.view.current());
+    },
+    right: function() {
+      // Move into the current category's options without re-clicking the tab
+      focusSettingsOptionsForCurrentCategory();
+    },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('closeHostMenu').click();
+      clickTarget('closeHostMenu');
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -498,20 +743,20 @@ const Views = {
     down: function() {},
     left: function() {
       this.view.prev();
-      document.getElementById('continueDeleteHost').focus();
+      safeFocus("continueDeleteHost");
     },
     right: function() {
       this.view.next();
-      document.getElementById('cancelDeleteHost').focus();
+      safeFocus("cancelDeleteHost");
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelDeleteHost').click();
+      clickTarget('cancelDeleteHost');
     },
     press: function() {},
     switch: function() {},
@@ -527,25 +772,25 @@ const Views = {
       'closeHostDetails'
     ]),
     up: function() {
-      document.getElementById('closeHostDetails').blur();
+      safeBlur("closeHostDetails");
     },
     down: function() {
-      document.getElementById('closeHostDetails').focus();
+      safeFocus("closeHostDetails");
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('closeHostDetails').click();
+      clickTarget('closeHostDetails');
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -559,21 +804,21 @@ const Views = {
       'closeAppSupport'
     ]),
     up: function() {
-      document.getElementById('closeAppSupport').blur();
+      safeBlur("closeAppSupport");
     },
     down: function() {
-      document.getElementById('closeAppSupport').focus();
+      safeFocus("closeAppSupport");
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('closeAppSupport').click();
+      clickTarget('closeAppSupport');
     },
     press: function() {},
     switch: function() {},
@@ -589,40 +834,39 @@ const Views = {
     up: function() {
       // If there are more categories behind, then go to the previous category
       if (this.view.prevCategory()) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       } else {
         // If there are no more categories, navigate to the SettingsNav view
         Navigation.change(Views.SettingsNav);
         // Set focus on the first navigation item in SettingsNav view when transitioning from Settings view
-        const navItem = document.getElementById(Views.SettingsNav.view.current());
-        if (navItem) {
-          navItem.focus();
-        }
+        safeFocus(Views.SettingsNav.view.current());
       }
     },
     down: function() {
       // If there are more categories after, then go to the next category
       if (this.view.nextCategory()) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
-    left: function() {},
-    right: function() {},
+    left: function() {
+      Navigation.change(Views.SettingsNav);
+      safeFocus(Views.SettingsNav.view.current());
+    },
+    right: function() {
+      changeToCategoryOptions();
+    },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('goBackBtn').click();
-      // Navigate to the HostsNav view
-      Navigation.change(Views.HostsNav);
-      document.getElementById('settingsBtn').focus();
+      clickTarget('goBackBtn');
     },
     press: function() {},
     switch: function() {
-      this.view.current().focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -641,50 +885,47 @@ const Views = {
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the first navigation item in Settings view when transitioning from SettingsNav view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     left: function() {
       this.view.prev();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
       this.view.next();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     select: function() {
-      const currentItem = this.view.current();
-      if (currentItem.id === 'goBackBtn') {
-        currentItem.click();
-        // Navigate to the HostsNav view
-        Navigation.change(Views.HostsNav);
-        document.getElementById('settingsBtn').focus();
+      const currentItem = resolveElement(this.view.current());
+      if (currentItem && currentItem.id === 'goBackBtn') {
+        clickTarget(currentItem);
+        // Navigate to the Hosts view and reset stack for clean focus
+        Navigation.reset(Views.Hosts);
+        safeFocus(Views.Hosts.view.current());
       } else {
-        this.view.current().click();
+        clickTarget(this.view.current());
       }
     },
     accept: function() {
-      const currentItem = document.getElementById(this.view.current());
-      if (currentItem.id === 'goBackBtn') {
-        currentItem.click();
-        // Navigate to the HostsNav view
-        Navigation.change(Views.HostsNav);
-        document.getElementById('settingsBtn').focus();
+      const currentItem = resolveElement(this.view.current());
+      if (currentItem && currentItem.id === 'goBackBtn') {
+        clickTarget(currentItem);
+        // Navigate to the Hosts view and reset stack for clean focus
+        Navigation.reset(Views.Hosts);
+        safeFocus(Views.Hosts.view.current());
       } else {
-        document.getElementById(this.view.current()).click();
+        clickTarget(this.view.current());
       }
     },
     back: function() {
-      document.getElementById('goBackBtn').click();
-      // Navigate to the HostsNav view
-      Navigation.change(Views.HostsNav);
-      document.getElementById('settingsBtn').focus();
+      clickTarget('goBackBtn');
+      // Navigate to the Hosts view and reset stack for clean focus
+      Navigation.reset(Views.Hosts);
+      safeFocus(Views.Hosts.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -702,36 +943,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('basicSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from BasicSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -747,26 +988,31 @@ const Views = {
       .parentNode.children[3].children[1].children),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
-      document.getElementById('selectResolution').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectResolution");
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
-      document.getElementById('selectResolution').focus();
+      safeFocus("selectResolution");
     },
     back: function() {
-      document.getElementById('selectResolution').click();
-      document.getElementById('selectResolution').focus();
+      closePopup('selectResolution');
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectResolution");
     },
     press: function() {},
     switch: function() {},
@@ -784,26 +1030,31 @@ const Views = {
       .parentNode.children[3].children[1].children),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
-      document.getElementById('selectFramerate').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectFramerate");
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
-      document.getElementById('selectFramerate').focus();
+      safeFocus("selectFramerate");
     },
     back: function() {
-      document.getElementById('selectFramerate').click();
-      document.getElementById('selectFramerate').focus();
+      closePopup('selectFramerate');
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectFramerate");
     },
     press: function() {},
     switch: function() {},
@@ -830,16 +1081,22 @@ const Views = {
       bitrateSlider.dispatchEvent(new Event('input'));
     },
     select: function() {
-      this.view.current().click();
-      document.getElementById('selectBitrate').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectBitrate");
     },
     accept: function() {
-      document.getElementById('selectBitrate').click();
-      document.getElementById('selectBitrate').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectBitrate");
     },
     back: function() {
-      document.getElementById('selectBitrate').click();
-      document.getElementById('selectBitrate').focus();
+      closePopup('selectBitrate');
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectBitrate");
     },
     press: function() {},
     switch: function() {},
@@ -859,36 +1116,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('interfaceSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from InterfaceSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -905,36 +1162,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('hostSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from HostSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -952,36 +1209,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('inputSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from InputSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -998,36 +1255,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('audioSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from AudioSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -1043,30 +1300,35 @@ const Views = {
       .parentNode.children[3].children[1].children),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
-      document.getElementById('selectAudio').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectAudio");
       // Show the required Restart Moonlight dialog and push the view
       setTimeout(() => requiredRestartAppDialog(), 800);
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
-      document.getElementById('selectAudio').focus();
+      safeFocus("selectAudio");
       // Show the required Restart Moonlight dialog and push the view
       setTimeout(() => requiredRestartAppDialog(), 800);
     },
     back: function() {
-      document.getElementById('selectAudio').click();
-      document.getElementById('selectAudio').focus();
+      closePopup('selectAudio');
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectAudio");
     },
     press: function() {},
     switch: function() {},
@@ -1085,36 +1347,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('videoSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from VideoSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -1130,30 +1392,35 @@ const Views = {
       .parentNode.children[3].children[1].children),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
-      document.getElementById('selectCodec').focus();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectCodec");
       // Show the required Restart Moonlight dialog and push the view
       setTimeout(() => requiredRestartAppDialog(), 800);
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
-      document.getElementById('selectCodec').focus();
+      safeFocus("selectCodec");
       // Show the required Restart Moonlight dialog and push the view
       setTimeout(() => requiredRestartAppDialog(), 800);
     },
     back: function() {
-      document.getElementById('selectCodec').click();
-      document.getElementById('selectCodec').focus();
+      closePopup('selectCodec');
+      closeAnyVisibleMdlMenu();
+      Navigation.pop();
+      safeFocus("selectCodec");
     },
     press: function() {},
     switch: function() {},
@@ -1173,36 +1440,36 @@ const Views = {
     ]),
     up: function() {
       this.view.prevOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     down: function() {
       this.view.nextOption();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
-    left: function() {},
+    left: function() {
+      focusSettingsCategory('aboutSettings');
+      Navigation.change(Views.Settings);
+    },
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
-      document.getElementById(this.view.current()).blur();
+      safeBlur(this.view.current());
       // Reset the current settings view before navigating to the next settings view
       resetSettingsView();
       // Navigate to the Settings view
       Navigation.change(Views.Settings);
       // Set focus on the category item in Settings view when transitioning from AboutSettings view
-      const navItem = document.getElementById(Views.Settings.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Settings.view.current());
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -1216,21 +1483,21 @@ const Views = {
       'closeNavGuide'
     ]),
     up: function() {
-      document.getElementById('closeNavGuide').blur();
+      safeBlur("closeNavGuide");
     },
     down: function() {
-      document.getElementById('closeNavGuide').focus();
+      safeFocus("closeNavGuide");
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('closeNavGuide').click();
+      clickTarget('closeNavGuide');
     },
     press: function() {},
     switch: function() {},
@@ -1246,25 +1513,25 @@ const Views = {
       'closeUpdateApp'
     ]),
     up: function() {
-      document.getElementById('closeUpdateApp').blur();
+      safeBlur("closeUpdateApp");
     },
     down: function() {
-      document.getElementById('closeUpdateApp').focus();
+      safeFocus("closeUpdateApp");
     },
     left: function() {},
     right: function() {},
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('closeUpdateApp').click();
+      clickTarget('closeUpdateApp');
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -1282,20 +1549,20 @@ const Views = {
     down: function() {},
     left: function() {
       this.view.prev();
-      document.getElementById('continueRestoreDefaults').focus();
+      safeFocus("continueRestoreDefaults");
     },
     right: function() {
       this.view.next();
-      document.getElementById('cancelRestoreDefaults').focus();
+      safeFocus("cancelRestoreDefaults");
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelRestoreDefaults').click();
+      clickTarget('cancelRestoreDefaults');
     },
     press: function() {},
     switch: function() {},
@@ -1311,39 +1578,36 @@ const Views = {
     up: function() {
       // If there are more rows behind, then go to the previous row
       if (this.view.prevCardRow(6)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       } else {
         // If there are no more rows, navigate to the AppsNav view
         Navigation.change(Views.AppsNav);
         // Set focus on the first navigation item in AppsNav view when transitioning from Apps view
-        const navItem = document.getElementById(Views.AppsNav.view.current());
-        if (navItem) {
-          navItem.focus();
-        }
+      safeFocus(Views.AppsNav.view.current());
       }
     },
     down: function() {
       // If there are more rows after, then go to the next row
       if (this.view.nextCardRow(6)) {
-        document.getElementById(this.view.current()).focus();
+        safeFocus(this.view.current());
       }
     },
     left: function() {
       this.view.prevCard(6);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
       this.view.nextCard(6);
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('goBackBtn').click();
+      clickTarget('goBackBtn');
     },
     press: function() {},
     switch: function() {
@@ -1366,31 +1630,28 @@ const Views = {
       // Navigate to the Apps view
       Navigation.change(Views.Apps);
       // Set focus on the first navigation item in Apps view when transitioning from AppsNav view
-      const navItem = document.getElementById(Views.Apps.view.current());
-      if (navItem) {
-        navItem.focus();
-      }
+      safeFocus(Views.Apps.view.current());
     },
     left: function() {
       this.view.prev();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     right: function() {
       this.view.next();
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('goBackBtn').click();
+      clickTarget('goBackBtn');
     },
     press: function() {},
     switch: function() {
-      document.getElementById(this.view.current()).focus();
+      safeFocus(this.view.current());
     },
     enter: function() {
       mark(this.view.current());
@@ -1408,20 +1669,20 @@ const Views = {
     down: function() {},
     left: function() {
       this.view.prev();
-      document.getElementById('continueQuitApp').focus();
+      safeFocus("continueQuitApp");
     },
     right: function() {
       this.view.next();
-      document.getElementById('cancelQuitApp').focus();
+      safeFocus("cancelQuitApp");
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelQuitApp').click();
+      clickTarget('cancelQuitApp');
     },
     press: function() {},
     switch: function() {},
@@ -1441,20 +1702,20 @@ const Views = {
     down: function() {},
     left: function() {
       this.view.prev();
-      document.getElementById('continueRestartApp').focus();
+      safeFocus("continueRestartApp");
     },
     right: function() {
       this.view.next();
-      document.getElementById('cancelRestartApp').focus();
+      safeFocus("cancelRestartApp");
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelRestartApp').click();
+      clickTarget('cancelRestartApp');
     },
     press: function() {},
     switch: function() {},
@@ -1474,20 +1735,20 @@ const Views = {
     down: function() {},
     left: function() {
       this.view.prev();
-      document.getElementById('continueExitApp').focus();
+      safeFocus("continueExitApp");
     },
     right: function() {
       this.view.next();
-      document.getElementById('cancelExitApp').focus();
+      safeFocus("cancelExitApp");
     },
     select: function() {
-      this.view.current().click();
+      clickTarget(this.view.current());
     },
     accept: function() {
-      document.getElementById(this.view.current()).click();
+      clickTarget(this.view.current());
     },
     back: function() {
-      document.getElementById('cancelExitApp').click();
+      clickTarget('cancelExitApp');
     },
     press: function() {},
     switch: function() {},
@@ -1525,7 +1786,7 @@ const Navigation = (function() {
 
       if (!hasFocus) {
         focus();
-        return;
+        // Fall through so the initiating input is handled on the same press
       }
 
       const view = Stack.get();
@@ -1567,11 +1828,29 @@ const Navigation = (function() {
       }
     }
 
+    function popToRoot() {
+      while (viewStack.length > 1) {
+        pop();
+      }
+    }
+
+    function reset(view) {
+      if (get()) {
+        get().leave();
+      }
+      viewStack.length = 0;
+      viewStack.push(view);
+      hasFocus = true;
+      get().enter();
+    }
+
     return {
       get,
       push,
       change,
-      pop
+      pop,
+      popToRoot,
+      reset
     };
   })();
 
@@ -1616,6 +1895,8 @@ const Navigation = (function() {
     push: Stack.push,
     change: Stack.change,
     pop: Stack.pop,
+    popToRoot: Stack.popToRoot,
+    reset: Stack.reset,
     start: State.start,
     stop: State.stop,
   };
