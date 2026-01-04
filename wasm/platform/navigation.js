@@ -17,6 +17,11 @@ function resolveElement(target) {
 function resolveClickable(target) {
   const el = resolveElement(target);
   if (!el) return null;
+  // In MDL menus, click the menu item itself so the menu closes properly
+  const menuItem = el.closest ? el.closest('.mdl-menu__item') : null;
+  if (menuItem && typeof menuItem.click === 'function') {
+    return menuItem;
+  }
   if (el.tagName === 'SELECT') return el; // allow native picker to open via click, no child search
 
   if (el.querySelector) {
@@ -65,6 +70,20 @@ function currentIdOf(target) {
   const el = resolveElement(target);
   if (el && el.id) return el.id;
   return typeof target === 'string' ? target : '';
+}
+
+function setIpTextEditing(enabled) {
+  const el = document.getElementById('ipAddressTextInput');
+  if (!el) return;
+  el.readOnly = !enabled;
+  if (enabled) {
+    el.focus();
+    if (typeof el.click === 'function') el.click();
+  } else {
+    el.blur();
+    const listener = document.getElementById('listener');
+    if (listener && typeof listener.focus === 'function') listener.focus();
+  }
 }
 
 function focusSettingsCategory(categoryKey) {
@@ -497,20 +516,10 @@ const Views = {
       safeFocus(this.view.current());
     },
     select: function() {
-      const currentItem = resolveElement(this.view.current());
-      if (currentItem && currentItem.id === 'supportBtn') {
-        appSupportDialog();
-      } else {
-        clickTarget(this.view.current());
-      }
+      clickTarget(this.view.current());
     },
     accept: function() {
-      const currentItem = resolveElement(this.view.current());
-      if (currentItem && currentItem.id === 'supportBtn') {
-        appSupportDialog();
-      } else {
-        clickTarget(this.view.current());
-      }
+      clickTarget(this.view.current());
     },
     back: function() {
       // Remove focus from the current element before changing the view
@@ -543,7 +552,7 @@ const Views = {
         changeIpAddressFieldValue.call(this, 1);
       } else {
         this.view.index = 0;
-        // Do not auto-focus the text field to avoid auto-opening the keyboard; require Select/Enter to focus
+        safeFocus(this.view.current());
       }
     },
     down: function() {
@@ -555,7 +564,7 @@ const Views = {
         safeFocus(this.view.current());
       } else if (currentId === 'continueAddHost' || currentId === 'cancelAddHost') {
         this.view.index = 0;
-        // Avoid auto-focus to prevent keyboard popup; Select will focus when needed
+        safeFocus(this.view.current());
       }
     },
     left: function() {
@@ -604,12 +613,29 @@ const Views = {
       }
     },
     select: function() {
+      const currentId = currentIdOf(this.view.current());
+      if (currentId === 'ipAddressTextInput') {
+        setIpTextEditing(true);
+        return;
+      }
+      setIpTextEditing(false);
       clickTarget(this.view.current());
     },
     accept: function() {
+      const currentId = currentIdOf(this.view.current());
+      if (currentId === 'ipAddressTextInput') {
+        setIpTextEditing(true);
+        return;
+      }
+      setIpTextEditing(false);
       clickTarget(this.view.current());
     },
     back: function() {
+      const active = document.activeElement;
+      if (active && active.id === 'ipAddressTextInput' && !active.readOnly) {
+        setIpTextEditing(false);
+        return;
+      }
       clickTarget('cancelAddHost');
     },
     press: function() {
@@ -874,8 +900,6 @@ const Views = {
         // Navigate to the Hosts view and reset stack for clean focus
         Navigation.reset(Views.Hosts);
         safeFocus(Views.Hosts.view.current());
-      } else if (currentItem && currentItem.id === 'restoreDefaultsBtn') {
-        restoreDefaultsDialog();
       } else {
         clickTarget(this.view.current());
       }
@@ -887,8 +911,6 @@ const Views = {
         // Navigate to the Hosts view and reset stack for clean focus
         Navigation.reset(Views.Hosts);
         safeFocus(Views.Hosts.view.current());
-      } else if (currentItem && currentItem.id === 'restoreDefaultsBtn') {
-        restoreDefaultsDialog();
       } else {
         clickTarget(this.view.current());
       }
@@ -974,16 +996,19 @@ const Views = {
     right: function() {},
     select: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectResolution");
     },
     accept: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectResolution");
     },
     back: function() {
       closePopup('selectResolution');
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectResolution");
     },
@@ -1013,16 +1038,19 @@ const Views = {
     right: function() {},
     select: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectFramerate");
     },
     accept: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectFramerate");
     },
     back: function() {
       closePopup('selectFramerate');
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectFramerate");
     },
@@ -1052,16 +1080,19 @@ const Views = {
     },
     select: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectBitrate");
     },
     accept: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectBitrate");
     },
     back: function() {
       closePopup('selectBitrate');
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectBitrate");
     },
@@ -1277,6 +1308,7 @@ const Views = {
     right: function() {},
     select: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectAudio");
       // Show the required Restart Moonlight dialog and push the view
@@ -1284,6 +1316,7 @@ const Views = {
     },
     accept: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectAudio");
       // Show the required Restart Moonlight dialog and push the view
@@ -1291,6 +1324,7 @@ const Views = {
     },
     back: function() {
       closePopup('selectAudio');
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectAudio");
     },
@@ -1366,6 +1400,7 @@ const Views = {
     right: function() {},
     select: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectCodec");
       // Show the required Restart Moonlight dialog and push the view
@@ -1373,6 +1408,7 @@ const Views = {
     },
     accept: function() {
       clickTarget(this.view.current());
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectCodec");
       // Show the required Restart Moonlight dialog and push the view
@@ -1380,6 +1416,7 @@ const Views = {
     },
     back: function() {
       closePopup('selectCodec');
+      closeAnyVisibleMdlMenu();
       Navigation.pop();
       safeFocus("selectCodec");
     },
