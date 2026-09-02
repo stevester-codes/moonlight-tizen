@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/build-alberta-traffic-map.yml'
       - 'alberta-traffic-map/index.html'
+      - 'alberta-traffic-map/v2.html'
   workflow_dispatch:
 
 permissions:
@@ -30,14 +31,17 @@ jobs:
           curl --retry 4 --retry-delay 2 -fL 'https://www.transportation.alberta.ca/mapping/IntersectionPoints.xml' -o alberta-traffic-map/data/IntersectionPoints.xml
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('alberta-traffic-map/index.html')
-          s=p.read_text()
-          s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','./leaflet.css')
-          s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','./leaflet.js')
-          s=s.replace('getJSON(BASE+"2025TCS.json?"+Date.now())','getJSON("./data/2025TCS.json")')
-          s=s.replace('getText(BASE+"ATRPoints.xml?"+Date.now())','getText("./data/ATRPoints.xml")')
-          s=s.replace('getText(BASE+"IntersectionPoints.xml?"+Date.now())','getText("./data/IntersectionPoints.xml")')
-          p.write_text(s)
+          for name in ('index.html','v2.html'):
+              p=Path('alberta-traffic-map')/name
+              if not p.exists():
+                  continue
+              s=p.read_text()
+              s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','./leaflet.css')
+              s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','./leaflet.js')
+              s=s.replace('getJSON(BASE+"2025TCS.json?"+Date.now())','getJSON("./data/2025TCS.json")')
+              s=s.replace('getText(BASE+"ATRPoints.xml?"+Date.now())','getText("./data/ATRPoints.xml")')
+              s=s.replace('getText(BASE+"IntersectionPoints.xml?"+Date.now())','getText("./data/IntersectionPoints.xml")')
+              p.write_text(s)
           PY
       - name: Commit vendored files
         shell: bash
@@ -46,5 +50,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add alberta-traffic-map .github/workflows/build-alberta-traffic-map.yml
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Fix Alberta traffic map dependencies'
+          git commit -m 'Self-host map dependencies'
           git push origin HEAD:alberta-traffic-map
