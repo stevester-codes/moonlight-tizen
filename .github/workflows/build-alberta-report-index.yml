@@ -1,0 +1,121 @@
+name: Build Alberta report index
+
+on:
+  push:
+    branches: [alberta-traffic-map]
+    paths:
+      - '.github/workflows/build-alberta-report-index.yml'
+      - 'alberta-traffic-map/report-fix.js'
+  workflow_dispatch:
+  schedule:
+    - cron: '27 11 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: alberta-traffic-map
+
+      - name: Build cached intersection and ATR report metadata
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 - <<'PY'
+          import concurrent.futures as cf
+          import json, time, urllib.request, xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          BASE='https://www.transportation.alberta.ca/mapping/'
+          UA='Mozilla/5.0 AlbertaTrafficMap/1.0'
+
+          def ids_from(path):
+              root=ET.parse(path).getroot()
+              return [n.attrib['refid'] for n in root.iter() if n.tag.lower().endswith('pinfo') and n.attrib.get('refid')]
+
+          def download(id_):
+              url=BASE+id_+'.xml'
+              last=None
+              for attempt in range(4):
+                  try:
+                      req=urllib.request.Request(url, headers={'User-Agent':UA,'Accept':'application/xml,text/xml,*/*'})
+                      with urllib.request.urlopen(req, timeout=15) as r:
+                          return id_, r.read()
+                  except Exception as e:
+                      last=e
+                      time.sleep(0.4*(attempt+1))
+              return id_, None
+
+          def fetch_all(ids, kind):
+              out={}
+              failures=[]
+              with cf.ThreadPoolExecutor(max_workers=16) as ex:
+                  futs=[ex.submit(download, x) for x in ids]
+                  for n,f in enumerate(cf.as_completed(futs),1):
+                      id_,blob=f.result()
+                      if blob is None:
+                          failures.append(id_)
+                          continue
+                      try:
+                          root=ET.fromstring(blob)
+                          if kind=='I':
+                              rows=[]
+                              for e in root.iter():
+                                  if e.tag.lower().endswith('intdata'):
+                                      a=e.attrib
+                                      rows.append([a.get('year',''),a.get('tmsd',''),a.get('counted',''),a.get('rawcount',''),a.get('diagram','')])
+                          else:
+                              months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                              rows=[]
+                              for e in root.iter():
+                                  if e.tag.lower().endswith('atrdata'):
+                                      a=e.attrib
+                                      rows.append([a.get('year',''),a.get('ann','')]+[a.get(m,'') for m in months])
+                          out[id_]=rows
+                      except Exception:
+                          failures.append(id_)
+                      if n%250==0:
+                          print(kind, n, '/', len(ids), 'ok', len(out), 'failed', len(failures), flush=True)
+              return out,failures
+
+          ints=ids_from('alberta-traffic-map/data/IntersectionPoints.xml')
+          atrs=ids_from('alberta-traffic-map/data/ATRPoints.xml')
+          print('Intersection IDs:',len(ints),'ATR IDs:',len(atrs))
+          I,fi=fetch_all(ints,'I')
+          A,fa=fetch_all(atrs,'A')
+          payload={'I':I,'A':A,'generated':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'failures':{'I':fi,'A':fa}}
+          Path('alberta-traffic-map/report-index.js').write_text('window.AB_REPORT_INDEX='+json.dumps(payload,separators=(',',':'))+';\n', encoding='utf-8')
+          print('Built:',len(I),'intersections and',len(A),'ATRs; failures:',len(fi),len(fa))
+          if len(I) < max(1,int(len(ints)*0.95)):
+              raise SystemExit('Too many intersection metadata fetches failed')
+          if len(A) < max(1,int(len(atrs)*0.95)):
+              raise SystemExit('Too many ATR metadata fetches failed')
+          PY
+
+      - name: Wire cached report index into map
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('alberta-traffic-map/v2.html')
+          s=p.read_text(encoding='utf-8')
+          injection='<script src="report-index.js"></script><script src="report-fix.js"></script>'
+          if injection not in s:
+              s=s.replace('</body></html>', injection+'</body></html>')
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Commit report index
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add alberta-traffic-map/report-index.js alberta-traffic-map/v2.html alberta-traffic-map/report-fix.js .github/workflows/build-alberta-report-index.yml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Cache Alberta count and ATR report metadata'
+          git push origin HEAD:alberta-traffic-map
