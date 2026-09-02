@@ -1,0 +1,1 @@
+window.AB_TRAFFIC_YEAR=2025;
