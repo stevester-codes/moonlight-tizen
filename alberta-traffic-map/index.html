@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Alberta Traffic Data Map</title>
+<meta name="description" content="Working viewer for Alberta Transportation traffic data.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+ integrity="sha256-p4NxAoJBhIINfQ3Yn2f7Ss0Z8kC3W5bOm2j7TQZbq7w=" crossorigin="">
+<style>
+:root{--fg:#17202a;--muted:#657386;--border:#d6dde5;--shadow:0 4px 20px #0002;--blue:#1769aa;--purple:#6b3fa0;--red:#d62828}
+*{box-sizing:border-box}html,body,#map{height:100%;margin:0}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--fg)}#map{background:#e7ebef}
+.panel{position:absolute;z-index:1000;top:12px;left:12px;width:min(370px,calc(100vw - 24px));background:#fffffff7;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
+.head{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-bottom:1px solid var(--border)}.head h1{font-size:15px;margin:0}.body{padding:10px 12px;max-height:calc(100vh - 90px);overflow:auto}
+#collapse{border:0;background:transparent;font-size:21px;cursor:pointer}.row{display:flex;gap:6px}#search{width:100%;padding:9px 10px;border:1px solid #aeb8c4;border-radius:6px;font-size:14px}button.go{padding:8px 10px;border:1px solid #8d99a6;border-radius:6px;background:#f8fafc;cursor:pointer}
+.layers{margin-top:10px;border:1px solid var(--border);border-radius:7px;padding:8px 9px}.layers strong{font-size:13px}.layers label{display:block;margin:5px 0;font-size:13px;cursor:pointer}
+.small,.hint{font-size:11px;color:var(--muted);line-height:1.4}.hint{margin-top:6px}.status{font-size:12px;margin-top:8px;min-height:1.3em}.legend{display:flex;gap:11px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:#475569}
+.sw{display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:-1px}.red{background:var(--red)}.blue{background:var(--blue);border-radius:50%}.purple{background:var(--purple)}
+#details{margin-top:9px;border-top:1px solid var(--border);padding-top:9px}#details:empty{display:none}.title{font-weight:700;font-size:15px;margin:0 0 3px}.desc{font-size:12px;color:#475569;margin:0 0 8px;line-height:1.35}
+.grid{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:12px;margin:7px 0}.grid b{color:#475569}.btn{display:inline-block;text-decoration:none;color:#0b57d0;background:#f8fafc;border:1px solid #bdc7d3;border-radius:5px;padding:5px 7px;margin:2px 3px 2px 0;font-size:12px}.btn:hover{background:#eef3f8}
+.yrow{border-top:1px solid #edf0f3;padding:6px 0;font-size:12px}.yrow:first-child{border-top:0}.year{display:inline-block;width:46px;font-weight:700}.note{margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:10.5px;color:#6b7280;line-height:1.35}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid #c5ccd5;border-top-color:#51606f;border-radius:50%;animation:s 1s linear infinite;vertical-align:-1px;margin-right:5px}@keyframes s{to{transform:rotate(360deg)}}.hidden{display:none}
+.leaflet-tooltip.marker-label{font-size:10px;font-weight:600;color:#111;background:#fffddd;border:1px solid #888;border-radius:3px;padding:1px 3px;box-shadow:none}.leaflet-tooltip.marker-label:before{display:none}
+.barwrap{height:9px;background:#e8edf3;border-radius:4px;overflow:hidden;min-width:95px}.bar{height:100%;background:#5b7fa6}.hist{width:100%;border-collapse:collapse;font-size:11px;margin-top:5px}.hist td{padding:2px 4px;border-top:1px solid #edf0f3}
+.error{color:#a02727}
+@media(max-width:650px){.panel{top:8px;left:8px;width:calc(100vw - 16px)}.body{max-height:50vh}}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="panel">
+ <div class="head"><h1>Alberta Traffic Data Map</h1><button id="collapse" aria-label="Collapse">−</button></div>
+ <div class="body" id="panelBody">
+  <div class="row"><input id="search" placeholder="Count ID, ATR, highway or place"><button class="go" id="go">Search</button></div>
+  <div class="layers">
+   <strong>Layers</strong>
+   <label><input id="ltcs" type="checkbox" checked> Traffic Control Sections</label>
+   <label><input id="latr" type="checkbox" checked> Automated Traffic Recorders</label>
+   <label><input id="lint" type="checkbox" checked> Intersections / count locations</label>
+   <div class="hint">Traffic sections appear at zoom 9; point layers at zoom 11, matching the original Alberta viewer.</div>
+  </div>
+  <div class="legend"><span><i class="sw red"></i>Traffic section</span><span><i class="sw blue"></i>ATR</span><span><i class="sw purple"></i>Intersection</span></div>
+  <div id="status" class="status"><span class="spin"></span>Loading Alberta data…</div>
+  <div id="details"></div>
+  <div class="note">Unofficial replacement for Alberta Transportation's broken Google Maps viewer. Data and report files are fetched from Alberta Transportation; a public CORS relay is used only because Alberta's endpoints do not permit cross-origin browser requests. Basemap © OpenStreetMap contributors.</div>
+ </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+"use strict";
+const BASE="https://www.transportation.alberta.ca/mapping/";
+const PROXY="https://api.allorigins.win/raw?url=";
+const map=L.map("map",{center:[54,-114],zoom:6,preferCanvas:true});
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'}).addTo(map);
+const renderer=L.canvas({padding:.5}), tg=L.layerGroup(), ag=L.layerGroup(), ig=L.layerGroup();
+let TCS=[],ATR=[],INTS=[],tLayers=[],aLayers=[],iLayers=[],ready=false,tVis=false,aVis=false,iVis=false;
+const $=id=>document.getElementById(id), status=$("status"), details=$("details");
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad8=v=>String(v).padStart(8,"0");
+
+async function getText(url){
+  try{const r=await fetch(url,{cache:"no-store"});if(r.ok)return await r.text()}catch(e){}
+  const r=await fetch(PROXY+encodeURIComponent(url),{cache:"no-store"});
+  if(!r.ok)throw new Error("Relay HTTP "+r.status);
+  return await r.text();
+}
+async function getJSON(url){return JSON.parse(await getText(url))}
+function xmlPoints(txt){
+ const d=new DOMParser().parseFromString(txt,"text/xml");
+ return [...d.querySelectorAll("pinfo")].map(n=>[n.getAttribute("refid"),+n.getAttribute("lat"),+n.getAttribute("lng"),n.getAttribute("desc")||""]);
+}
+function decodePolyline(str,precision=5){
+ let index=0,lat=0,lng=0,out=[],factor=10**precision;
+ while(index<str.length){
+  let result=0,shift=0,b;do{b=str.charCodeAt(index++)-63;result|=(b&31)<<shift;shift+=5}while(b>=32);lat+=(result&1)?~(result>>1):(result>>1);
+  result=0;shift=0;do{b=str.charCodeAt(index++)-63;result|=(b&31)<<shift;shift+=5}while(b>=32);lng+=(result&1)?~(result>>1):(result>>1);out.push([lat/factor,lng/factor]);
+ } return out;
+}
+function update(){
+ const z=map.getZoom(), wt=$("ltcs").checked&&z>=9, wa=$("latr").checked&&z>=11, wi=$("lint").checked&&z>=11;
+ if(wt&&!tVis){tg.addTo(map);tVis=true}if(!wt&&tVis){map.removeLayer(tg);tVis=false}
+ if(wa&&!aVis){ag.addTo(map);aVis=true}if(!wa&&aVis){map.removeLayer(ag);aVis=false}
+ if(wi&&!iVis){ig.addTo(map);iVis=true}if(!wi&&iVis){map.removeLayer(ig);iVis=false}
+}
+map.on("zoomend",update);["ltcs","latr","lint"].forEach(id=>$(id).addEventListener("change",update));
+function focus(m,z=14){map.setView(m.getLatLng(),Math.max(z,map.getZoom()));setTimeout(update,0)}
+function mkPoint(p,kind,i){
+ const color=kind==="atr"?"#1769aa":"#6b3fa0";
+ const m=L.circleMarker([p[1],p[2]],{renderer,radius:kind==="atr"?5:4,weight:1,color,fillColor:color,fillOpacity:.87});
+ m.bindTooltip(esc(p[0]),{direction:"top",className:"marker-label"});
+ m.on("click",()=>kind==="atr"?showATR(i,m):showINT(i,m));return m;
+}
+async function init(){
+ try{
+  const [ts,as,is]=await Promise.all([
+   getJSON(BASE+"2025TCS.json?"+Date.now()),
+   getText(BASE+"ATRPoints.xml?"+Date.now()),
+   getText(BASE+"IntersectionPoints.xml?"+Date.now())
+  ]);
+  TCS=ts;ATR=xmlPoints(as);INTS=xmlPoints(is);
+  TCS.forEach((s,i)=>{
+   const w=s.tcs.waadt||0, weight=(w>1000&&w<19500)?6:Math.max(3,3+Math.floor(w/188500*29));
+   const l=L.polyline(decodePolyline(s.tcs.encodedPath),{renderer,color:"#d62828",opacity:.42,weight});
+   l.bindTooltip(`Hwy ${esc(s.cs.hwy)} · ${Number(w).toLocaleString()} WAADT`,{sticky:true});
+   l.on("mouseover",()=>l.setStyle({opacity:1}));l.on("mouseout",()=>l.setStyle({opacity:.42}));l.on("click",()=>showTCS(i,l));l.addTo(tg);tLayers.push(l);
+  });
+  ATR.forEach((p,i)=>{const m=mkPoint(p,"atr",i);m.addTo(ag);aLayers.push(m)});
+  INTS.forEach((p,i)=>{const m=mkPoint(p,"int",i);m.addTo(ig);iLayers.push(m)});
+  ready=true;status.textContent=`Loaded ${TCS.length.toLocaleString()} traffic sections, ${ATR.length.toLocaleString()} ATRs and ${INTS.length.toLocaleString()} intersections.`;update();
+ }catch(e){
+  console.error(e);status.innerHTML=`<span class="error"><b>Could not load Alberta data.</b> ${esc(e.message)}. Refresh to retry.</span>`;
+ }
+}
+function report(y,id){return `${BASE}${y}/TM/${pad8(id)}.pdf`}
+function raw(y,id){return `${BASE}${y}/Raw/${pad8(id)}.xls`}
+function diagram(y,id){return `${BASE}${y}/Diagram/${pad8(id)}.jpg`}
+
+async function showINT(i,m){
+ focus(m);const p=INTS[i],id=p[0],token=Math.random().toString(36).slice(2);details.dataset.token=token;
+ details.innerHTML=`<div class="title">Count location ${esc(id)}</div><div class="desc">${esc(p[3])}</div><div><span class="spin"></span>Loading available reports from Alberta…</div>`;
+ try{
+  const x=await getText(BASE+pad8(id)+".xml?"+Date.now());if(details.dataset.token!==token)return;
+  const d=new DOMParser().parseFromString(x,"text/xml"),rows=[...d.querySelectorAll("intdata")];
+  let h=`<div class="title">Count location ${esc(id)}</div><div class="desc">${esc(p[3])}</div>`;
+  for(const n of rows){
+   const y=n.getAttribute("year"),t=n.getAttribute("tmsd"),counted=n.getAttribute("counted")||"",r=n.getAttribute("rawcount"),g=n.getAttribute("diagram");
+   h+=`<div class="yrow"><span class="year">${esc(y)}</span>${t==="T"?`<a class="btn" target="_blank" rel="noopener" href="${report(y,id)}">Traffic report PDF</a>`:"<span class=small>No annual report</span>"}`;
+   if(counted)h+=`<div class="small" style="margin-left:46px">Counted ${esc(counted)} ${r==="T"?`· <a target="_blank" href="${raw(y,id)}">Raw XLS</a>`:""} ${g==="T"?`· <a target="_blank" href="${diagram(y,id)}">Diagram JPG</a>`:""}</div>`;
+   h+="</div>";
+  }
+  details.innerHTML=h;
+ }catch(e){details.innerHTML+=`<div class="error small">Could not read the report index. <a target="_blank" href="${BASE+pad8(id)+".xml"}">Open Alberta's raw index</a>.</div>`}
+}
+async function showATR(i,m){
+ focus(m);const p=ATR[i],id=p[0],token=Math.random().toString(36).slice(2);details.dataset.token=token;
+ details.innerHTML=`<div class="title">ATR ${esc(id)}</div><div class="desc">${esc(p[3])}</div><a class="btn" target="_blank" rel="noopener" href="${BASE}TenYearHistorical/${encodeURIComponent(id)}.xlsx"><b>Ten Year Historical Report</b></a><div><span class="spin"></span>Loading station files…</div>`;
+ try{
+  const x=await getText(BASE+encodeURIComponent(id)+".xml?"+Date.now());if(details.dataset.token!==token)return;
+  const d=new DOMParser().parseFromString(x,"text/xml"),rows=[...d.querySelectorAll("atrdata")],months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  let h=`<div class="title">ATR ${esc(id)}</div><div class="desc">${esc(p[3])}</div><a class="btn" target="_blank" rel="noopener" href="${BASE}TenYearHistorical/${encodeURIComponent(id)}.xlsx"><b>Ten Year Historical Report</b></a>`;
+  for(const n of rows){
+   const y=n.getAttribute("year"),ann=n.getAttribute("ann");h+=`<div class="yrow"><span class="year">${esc(y)}</span>`;
+   if(ann==="T"){const u=+y>=2017?`${BASE}${y}/ATR/${encodeURIComponent(id)}.xlsx`:`${BASE}${y}/ATR/${encodeURIComponent(id)}.pdf`;h+=`<a class="btn" target="_blank" rel="noopener" href="${u}">Annual ${+y>=2017?"XLSX":"PDF"}</a>`}
+   const mm=months.filter(x=>n.getAttribute(x)==="T");if(mm.length)h+=`<div style="margin-left:46px">${mm.map(mon=>{const ext=(+y>=2018||(+y===2017&&months.indexOf(mon)>0))?"xlsx":"txt";return `<a class="btn" target="_blank" rel="noopener" href="${BASE}${y}/ATR/${mon}${y}/${encodeURIComponent(id)}.${ext}">${mon}</a>`}).join("")}</div>`;
+   h+="</div>";
+  }details.innerHTML=h;
+ }catch(e){details.innerHTML+=`<div class="error small">Could not read the ATR report index.</div>`}
+}
+async function showTCS(i,l){
+ const s=TCS[i],id=s.id;details.dataset.token=String(id);
+ details.innerHTML=`<div class="title">Highway ${esc(s.cs.hwy)} — Traffic Control Section</div><div class="grid"><b>Control section</b><span>${String(s.cs.cs).padStart(2,"0")}</span><b>Traffic section</b><span>${String(s.tcs.tcs).padStart(2,"0")}</span><b>2025 WAADT</b><span>${Number(s.tcs.waadt).toLocaleString()}</span></div><div><span class="spin"></span>Loading section history…</div>`;
+ try{
+  const d=await getJSON(BASE+"TCS/"+id+".json?"+Date.now());if(details.dataset.token!==String(id))return;
+  let hist=(d.waadts||[]).filter(r=>r[1]!=null).slice().reverse(),max=Math.max(1,...hist.map(r=>r[1]));
+  details.innerHTML=`<div class="title">Highway ${esc(d.hwy)} — Traffic Control Section</div><div class="grid"><b>Control section</b><span>${String(d.cs).padStart(2,"0")}</span><b>Traffic section</b><span>${String(d.tcs).padStart(2,"0")}</span><b>From km</b><span>${esc(d.from)}</span><b>To km</b><span>${esc(d.to)}</span><b>2025 WAADT</b><span>${Number(d.waadt).toLocaleString()}</span><b>2025 ESAL/day/direction</b><span>${esc(d.esal)}</span></div>
+  <b style="font-size:12px">Historic WAADT</b><table class="hist">${hist.map(r=>`<tr><td>${esc(r[0])}</td><td>${Number(r[1]).toLocaleString()}</td><td><div class="barwrap"><div class="bar" style="width:${Math.max(2,100*r[1]/max)}%"></div></div></td></tr>`).join("")}</table>`;
+ }catch(e){}
+}
+function norm(s){return String(s||"").trim().toLowerCase()}
+function local(q){
+ const nq=norm(q),digits=q.replace(/\D/g,"");
+ if(digits){let i=INTS.findIndex(p=>String(p[0])===digits||pad8(p[0])===digits.padStart(8,"0"));if(i>=0)return["i",i];i=ATR.findIndex(p=>norm(p[0])===nq);if(i>=0)return["a",i]}
+ let i=ATR.findIndex(p=>norm(p[3]).includes(nq)||norm(p[0]).includes(nq));if(i>=0)return["a",i];
+ i=INTS.findIndex(p=>norm(p[3]).includes(nq)||norm(p[0]).includes(nq));if(i>=0)return["i",i];
+ const h=nq.replace(/^hwy\s*/,"").replace(/^highway\s*/,"");i=TCS.findIndex(s=>norm(s.cs.hwy)===h);if(i>=0)return["t",i];return null;
+}
+async function search(){
+ const q=$("search").value.trim();if(!q)return;if(!ready){status.textContent="Traffic data is still loading…";return}
+ status.textContent="Searching…";const h=local(q);
+ if(h){if(h[0]==="i"){focus(iLayers[h[1]]);showINT(h[1],iLayers[h[1]])}else if(h[0]==="a"){focus(aLayers[h[1]]);showATR(h[1],aLayers[h[1]])}else{const l=tLayers[h[1]];map.fitBounds(l.getBounds(),{maxZoom:13});showTCS(h[1],l)}status.textContent="Found in Alberta traffic data.";return}
+ try{const r=await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=ca&q="+encodeURIComponent(q+", Alberta"));const a=await r.json();if(a[0]){map.setView([+a[0].lat,+a[0].lon],13);status.textContent="Place found. Zoom in for traffic layers.";return}}catch(e){}
+ status.textContent="No match found.";
+}
+$("go").onclick=search;$("search").addEventListener("keydown",e=>{if(e.key==="Enter")search()});
+$("collapse").onclick=()=>{const b=$("panelBody"),x=b.classList.toggle("hidden");$("collapse").textContent=x?"+":"−";setTimeout(()=>map.invalidateSize(),50)};
+init();
+</script>
+</body>
+</html>
