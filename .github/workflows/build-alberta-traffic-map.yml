@@ -1,0 +1,50 @@
+name: Build Alberta Traffic Map
+
+on:
+  push:
+    branches: [alberta-traffic-map]
+    paths:
+      - '.github/workflows/build-alberta-traffic-map.yml'
+      - 'alberta-traffic-map/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: alberta-traffic-map
+      - name: Vendor Leaflet and Alberta map data
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p alberta-traffic-map/data
+          curl --retry 4 --retry-delay 2 -fL 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css' -o alberta-traffic-map/leaflet.css
+          curl --retry 4 --retry-delay 2 -fL 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js' -o alberta-traffic-map/leaflet.js
+          curl --retry 4 --retry-delay 2 -fL 'https://www.transportation.alberta.ca/mapping/2025TCS.json' -o alberta-traffic-map/data/2025TCS.json
+          curl --retry 4 --retry-delay 2 -fL 'https://www.transportation.alberta.ca/mapping/ATRPoints.xml' -o alberta-traffic-map/data/ATRPoints.xml
+          curl --retry 4 --retry-delay 2 -fL 'https://www.transportation.alberta.ca/mapping/IntersectionPoints.xml' -o alberta-traffic-map/data/IntersectionPoints.xml
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('alberta-traffic-map/index.html')
+          s=p.read_text()
+          s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','./leaflet.css')
+          s=s.replace('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','./leaflet.js')
+          s=s.replace('getJSON(BASE+"2025TCS.json?"+Date.now())','getJSON("./data/2025TCS.json")')
+          s=s.replace('getText(BASE+"ATRPoints.xml?"+Date.now())','getText("./data/ATRPoints.xml")')
+          s=s.replace('getText(BASE+"IntersectionPoints.xml?"+Date.now())','getText("./data/IntersectionPoints.xml")')
+          p.write_text(s)
+          PY
+      - name: Commit vendored files
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add alberta-traffic-map .github/workflows/build-alberta-traffic-map.yml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Fix Alberta traffic map dependencies'
+          git push origin HEAD:alberta-traffic-map
