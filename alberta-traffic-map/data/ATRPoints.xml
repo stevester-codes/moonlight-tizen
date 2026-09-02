@@ -1,0 +1,397 @@
+<ATRPoints>
+  <!-- Dont use copy and paste on this XML file, use "View Source" or "Save As"
+       What the browser displays is *interpreted* XML, not XML source. -->
+<pinfo refid="00401450" lat="51.28003" lng="-114.87055" desc="19.5 KM N OF 1A &amp; 40 COCHRANE"/>
+<pinfo refid="00402050" lat="52.47385" lng="-116.10697" desc="0.2 KM S OF 11 &amp; 734 NORDEGG"/>
+<pinfo refid="00581050" lat="58.51483" lng="-116.13003" desc="1.1 KM E OF 58 &amp; 88 FT VERMILION"/>
+<pinfo refid="50010010" lat="51.15803" lng="-115.69895" desc="0.8 KM W OF SUNSHINE OVERPASS"/>
+<pinfo refid="50010030" lat="51.44915" lng="-116.31970" desc="2.7 KM W OF ALTA - BC BORDER"/>
+<pinfo refid="50010050" lat="51.14537" lng="-115.42252" desc="1.6 KM W OF BANFF PARK GATES"/>
+<pinfo refid="50010250" lat="51.04357" lng="-115.28702" desc="5.0 KM E 1 &amp; 1A CANMORE WJ"/>
+<pinfo refid="50010410" lat="51.11663" lng="-114.98750" desc="2.7 KM E OF 1 &amp; 40 MORLEY FLATS"/>
+<pinfo refid="50010610" lat="51.08733" lng="-114.49031" desc="1.5 KM W OF 1 &amp; 22 COCHRANE"/>
+<pinfo refid="50010850" lat="51.08887" lng="-114.28958" desc="1.0 KM E OF 1 &amp; 563 CALGARY"/>
+<pinfo refid="50011010" lat="51.03757" lng="-113.78535" desc="3 KM E OF 1 &amp; 1A CHESTERMERE"/>
+<pinfo refid="50011250" lat="51.03750" lng="-113.50018" desc="2.8 KM E OF 1 &amp; 24 STRATHMORE"/>
+<pinfo refid="50011410" lat="50.83434" lng="-112.67083" desc="1 KM W OF 1 &amp; 56 BASSANO"/>
+<pinfo refid="50011450" lat="51.03757" lng="-113.15658" desc="7.3 KM E OF 1 &amp; 21 STRATHMORE"/>
+<pinfo refid="50011850" lat="50.62950" lng="-111.97027" desc="1.5 KM E OF 1 &amp; 36 BROOKS"/>
+<pinfo refid="50012010" lat="50.14223" lng="-110.92129" desc="6.4 KM W OF 1 &amp; 524 REDCLIFF"/>
+<pinfo refid="50012110" lat="50.04469" lng="-110.72033" desc="W OF 1 &amp; SOUTH SASKATCHEWAN RIVER BRIDGE, MEDICINE HAT"/>
+<pinfo refid="50012120" lat="50.01660" lng="-110.69042" desc="0.8 KM W OF 1 &amp; SOUTH RIDGE DR, MEDICINE HAT"/>
+<pinfo refid="50012130" lat="49.99904" lng="-110.64197" desc="0.3 KM E OF 1 &amp; DUNMORE ROAD, MEDICINE HAT"/>
+<pinfo refid="50012140" lat="50.03678" lng="-110.71135" desc="0.7 KM E OF 1 &amp; SOUTH SASKATCHEWAN RIVER BRIDGE, MEDICINE HAT"/>
+<pinfo refid="50012210" lat="49.94611" lng="-110.03216" desc="1.5 KM W OF ALTA - SASK BORDER WALSH"/>
+<pinfo refid="50024260" lat="54.73398" lng="-113.35338" desc="4.8 KM W OF 2 &amp; 55 ATHABASCA"/>
+<pinfo refid="50024450" lat="55.02407" lng="-113.95955" desc="5.7 KM E OF 2 &amp; 44 HONDO"/>
+<pinfo refid="50024650" lat="55.24342" lng="-114.70613" desc="4.4 KM E OF 2 &amp; 88 SLAVE LAKE"/>
+<pinfo refid="50024860" lat="55.31705" lng="-115.40770" desc="3.0 KM W OF 2 &amp; 33 KINUSO"/>
+<pinfo refid="50025270" lat="55.43293" lng="-116.49250" desc="0.3 KM W OF 2 &amp; 749 IN HIGH PRAIRIE"/>
+<pinfo refid="50026260" lat="56.23932" lng="-117.30875" desc="W SIDE OF PEACE RIVER BRIDGE"/>
+<pinfo refid="50027410" lat="55.17066" lng="-119.03032" desc="13.3 KM W OF 40 &amp; 43 GRANDE PRAIRIE"/>
+<pinfo refid="50027610" lat="55.48048" lng="-119.99914" desc="ALTA - BC BORDER"/>
+<pinfo refid="50030210" lat="49.63216" lng="-114.69184" desc="ALTA - BC BORDER"/>
+<pinfo refid="50030450" lat="49.52677" lng="-113.96785" desc="1.6 KM W OF 3 &amp; 6 PINCHER CREEK"/>
+<pinfo refid="50030610" lat="49.69842" lng="-113.48329" desc="3.3 KM W OF 2 &amp; 3 FT MACLEOD"/>
+<pinfo refid="50030810" lat="49.72695" lng="-112.91947" desc="2.4 KM W OF 3 &amp; 25 COALHURST"/>
+<pinfo refid="50030850" lat="49.75945" lng="-113.30000" desc="6.6 KM E OF 2 &amp; 3 FT MACLEOD"/>
+<pinfo refid="50030910" lat="49.70792" lng="-112.86552" desc="W OF 3 &amp; OLD MAN RIVER BRIDGE, LETHBRIDGE"/>
+<pinfo refid="50030920" lat="49.69778" lng="-112.80387" desc="0.2 KM W OF 3 &amp; 28 ST SOUTH, LETHBRIDGE"/>
+<pinfo refid="50031010" lat="49.71133" lng="-112.71920" desc="4.5 KM E OF 3 &amp; 4(43 ST) LETHBRIDGE"/>
+<pinfo refid="50031070" lat="49.78153" lng="-112.15203" desc="0.7 KM E OF 3 &amp; 36 IN TABER WJ"/>
+<pinfo refid="50031450" lat="49.84595" lng="-111.44033" desc="0.9 KM E OF 3 &amp; 879 BOW ISLAND"/>
+<pinfo refid="50031610" lat="49.87352" lng="-110.92717" desc="2.7 KM W OF 3 &amp; 887 SEVEN PERSONS"/>
+<pinfo refid="50040610" lat="49.62167" lng="-112.67908" desc="11.0 KM E OF 4 &amp; 5 WILSON"/>
+<pinfo refid="50050260" lat="49.20247" lng="-113.36467" desc="4.7 KM W OF 2 &amp; 5 &amp; 501 CARDSTON SJ"/>
+<pinfo refid="50050450" lat="49.21782" lng="-113.27880" desc="1.8 KM E OF 2 &amp; 5 CARDSTON NJ"/>
+<pinfo refid="50070880" lat="50.70277" lng="-113.98620" desc="0.8 KM W OF 2A &amp; 7 OKOTOKS"/>
+<pinfo refid="50080610" lat="51.02350" lng="-114.45722" desc="1.0 KM E OF 8 &amp; 22 CALGARY"/>
+<pinfo refid="50090450" lat="51.38688" lng="-113.21613" desc="1.6 KM E OF 9 &amp; 21 BEISEKER"/>
+<pinfo refid="50090810" lat="51.64889" lng="-112.07241" desc="0.1 KM E OF 9 &amp; 855 WATTS"/>
+<pinfo refid="50091250" lat="51.38690" lng="-110.51420" desc="2.8 KM W OF 9 &amp; 41 OYEN"/>
+<pinfo refid="50091410" lat="51.38696" lng="-110.00974" desc="1.0 KM W OF ALSASK"/>
+<pinfo refid="50100258" lat="51.09817" lng="-115.08967" desc="0.5 KM W OF 1A &amp; 1X EXSHAW"/>
+<pinfo refid="50100458" lat="51.22628" lng="-114.68778" desc="2.1 KM W OF 1A &amp; 40 SEEBE"/>
+<pinfo refid="50100668" lat="51.19423" lng="-114.40295" desc="6.5 KM E OF 1A &amp; 22 COCHRANE"/>
+<pinfo refid="50100858" lat="51.03773" lng="-113.87090" desc="4.8 KM W OF 1 &amp; 1A CALGARY"/>
+<pinfo refid="50100860" lat="51.40500" lng="-112.60675" desc="0.9 KM E OF 10 &amp; 56 DRUMHELLER"/>
+<pinfo refid="50110250" lat="52.00337" lng="-116.66253" desc="2.3 KM E OF BANFF PARK GATES"/>
+<pinfo refid="50110410" lat="52.48802" lng="-116.06288" desc="3.3 KM E OF 11 &amp; 734 NORDEGG"/>
+<pinfo refid="50110850" lat="52.40413" lng="-115.03737" desc="1.9 KM W OF 11 &amp; 756 ROCKY MTN HOUSE"/>
+<pinfo refid="50111010" lat="52.31916" lng="-114.39927" desc="1.2 KM W OF 11 &amp; 766 HESPERO WJ"/>
+<pinfo refid="50111220" lat="52.28178" lng="-113.88580" desc="2.7 KM W OF 2 &amp; 11 RED DEER"/>
+<pinfo refid="50111450" lat="52.27280" lng="-113.63805" desc="2.5 KM W OF 11 &amp; 808 RED DEER"/>
+<pinfo refid="50111650" lat="52.28773" lng="-113.52017" desc="0.7 KM E OF 11 &amp; 815 RED DEER"/>
+<pinfo refid="50120880" lat="52.46305" lng="-113.80163" desc="1.0 KM W OF 2 &amp; 12 LACOMBE"/>
+<pinfo refid="50121010" lat="52.46331" lng="-113.41958" desc="7.4 KM W OF 12 &amp; 50 CLIVE"/>
+<pinfo refid="50121260" lat="52.32490" lng="-112.75178" desc="2.3 KM W OF 12 &amp; 56 STETTLER"/>
+<pinfo refid="50121460" lat="52.23460" lng="-111.93978" desc="2.7 KM W OF 12 &amp; 861 CASTOR"/>
+<pinfo refid="50121480" lat="52.32117" lng="-112.71294" desc="0.5 KM E OF 12 &amp; 56 IN STETTLER"/>
+<pinfo refid="50121650" lat="52.09992" lng="-111.50615" desc="3.6 KM W OF 12 &amp; 872 CORONATION WJ"/>
+<pinfo refid="50121810" lat="52.04033" lng="-111.26626" desc="12.7 KM E OF 12 &amp; 872 THRONE EJ"/>
+<pinfo refid="50122010" lat="51.85271" lng="-110.00512" desc="ALTA - SASK BORDER COMPEER"/>
+<pinfo refid="50130860" lat="52.95975" lng="-113.61713" desc="2.0 KM E OF 2 &amp; 13 WETASKIWIN"/>
+<pinfo refid="50131210" lat="52.98672" lng="-112.73642" desc="1.6 KM W 13 &amp; 56 CAMROSE"/>
+<pinfo refid="50131450" lat="52.79333" lng="-111.88427" desc="2.7 KM W OF 13 &amp; 36 KILLAM"/>
+<pinfo refid="50131650" lat="52.79123" lng="-111.81760" desc="1.7 KM E OF 13 &amp; 36 KILLAM"/>
+<pinfo refid="50131850" lat="52.49203" lng="-110.86052" desc="2.7 KM W OF 13 &amp; 41 CZAR"/>
+<pinfo refid="50132010" lat="52.36126" lng="-110.01430" desc="0.4 KM W OF ALTA - SASK BORDER"/>
+<pinfo refid="50140250" lat="53.51553" lng="-113.35798" desc="1.0 KM W OF 216 &amp; SPF EDMONTON"/>
+<pinfo refid="50140620" lat="53.41151" lng="-113.13330" desc="1.2 KM E OF 14 &amp; 824 SOUTH COOKING LAKE"/>
+<pinfo refid="50140660" lat="53.36688" lng="-112.69550" desc="0.7 KM W OF 14 &amp; 834 TOFIELD WJ"/>
+<pinfo refid="50141050" lat="53.09827" lng="-111.79790" desc="1.0 KM W OF 14 &amp; 36 VIKING"/>
+<pinfo refid="50141410" lat="52.90165" lng="-111.07335" desc="11.2 KM E OF 14 &amp; 881 IRMA"/>
+<pinfo refid="50141610" lat="52.84150" lng="-110.00618" desc="ALTA - SASK BORDER"/>
+<pinfo refid="50150410" lat="53.70779" lng="-113.23797" desc="2.0 KM W 15 &amp; 21 FORT SASKATCHEWAN"/>
+<pinfo refid="50150610" lat="53.77445" lng="-113.02819" desc="6.7 KM W OF 15 &amp; 45 SCOTFORD"/>
+<pinfo refid="50150850" lat="53.60617" lng="-112.37697" desc="3.2 KM W OF 15 &amp; 855 MUNDARE"/>
+<pinfo refid="50160010" lat="52.88252" lng="-118.36420" desc="19.0 KM W OF 16 &amp; 93 JASPER"/>
+<pinfo refid="50160210" lat="53.22536" lng="-117.83154" desc="JASPER PARK GATES"/>
+<pinfo refid="50160260" lat="53.42230" lng="-117.52218" desc="10 KM E OF 16 &amp; 40 HINTON EJ"/>
+<pinfo refid="50160610" lat="53.57854" lng="-116.04534" desc="5.8 KM W OF 16 &amp; 32 EDSON"/>
+<pinfo refid="50160650" lat="53.57050" lng="-116.55760" desc="1.6 KM E OF 16 &amp; 47 EDSON"/>
+<pinfo refid="50160810" lat="53.61623" lng="-115.79530" desc="11.6 KM E OF 16 &amp; 32 CARROT CREEK"/>
+<pinfo refid="50161210" lat="53.57032" lng="-114.23937" desc="1.0 KM W OF 16 &amp; 43 CARVEL CORNER"/>
+<pinfo refid="50161250" lat="53.58532" lng="-114.94518" desc="2.8 KM E OF 16 &amp; 22 ENTWISTLE EJ"/>
+<pinfo refid="50161420" lat="53.56630" lng="-114.15240" desc="0.2 KM E OF 16 &amp; 16A BEACH CORNER"/>
+<pinfo refid="50161610" lat="53.54144" lng="-113.82455" desc="4.1 KM W OF 16A &amp; 60 SPRUCE GROVE"/>
+<pinfo refid="50161810" lat="53.57066" lng="-113.36993" desc="1.6 KM W OF 16 &amp; 216, EDMONTON"/>
+<pinfo refid="50161860" lat="53.56993" lng="-113.26193" desc="1.0 KM W OF 16 &amp; 21 SHERWOOD PARK"/>
+<pinfo refid="50162010" lat="53.57036" lng="-113.12924" desc="7.8 KM E OF 16 &amp; 21 ARDROSSAN"/>
+<pinfo refid="50162450" lat="53.56878" lng="-112.28643" desc="3.2 KM E OF 15 &amp; 16 MUNDARE"/>
+<pinfo refid="50162610" lat="53.33572" lng="-111.43823" desc="7.6 KM E OF 16 &amp; 870 INNISFREE"/>
+<pinfo refid="50163010" lat="53.28569" lng="-110.18474" desc="10.4 KM E OF 16 &amp; 897 BLACKFOOT"/>
+<pinfo refid="50180650" lat="54.00620" lng="-115.22568" desc="1.2 KM E OF 18 &amp; 43 GREEN COURT"/>
+<pinfo refid="50180860" lat="54.08250" lng="-114.69322" desc="1.0 KM W OF 18 &amp; 764 BARRHEAD"/>
+<pinfo refid="50181050" lat="54.15220" lng="-113.93542" desc="5.5 KM W OF 18 &amp; 44 WESTLOCK"/>
+<pinfo refid="50181250" lat="54.14457" lng="-113.52377" desc="8.8 KM E OF 2 &amp; 18 CLYDE EJ"/>
+<pinfo refid="50191010" lat="53.33796" lng="-113.59797" desc="3.4 KM W OF 2 &amp; 19 DEVON"/>
+<pinfo refid="50203658" lat="56.20392" lng="-117.54590" desc="4.3 KM E OF 2 &amp; 2A GRIMSHAW"/>
+<pinfo refid="50205458" lat="55.43290" lng="-116.77047" desc="3.2 KM W OF 2 &amp; 2A TRIANGLE"/>
+<pinfo refid="50221460" lat="50.89232" lng="-114.31455" desc="0.9 KM W OF 22 &amp; 22X PRIDDIS EJ"/>
+<pinfo refid="50223050" lat="53.21164" lng="-114.89772" desc="2.9 KM W OF 22 &amp; 39 DRAYTON VALLEY"/>
+<pinfo refid="50230850" lat="50.57203" lng="-113.78988" desc="2.8 KM E OF 2 &amp; 23 HIGH RIVER"/>
+<pinfo refid="50240450" lat="50.84890" lng="-113.45452" desc="2.6 KM W OF 24 &amp; 817 CARSELAND"/>
+<pinfo refid="50261050" lat="53.01810" lng="-112.77347" desc="1.8 KM E OF 13 &amp; 26 CAMROSE"/>
+<pinfo refid="50261250" lat="53.01692" lng="-111.85505" desc="0.9 KM W OF 26 &amp; 36 VIKING"/>
+<pinfo refid="50270670" lat="51.78757" lng="-114.46835" desc="1.2 KM E OF 22 &amp; 27 SUNDRE EJ"/>
+<pinfo refid="50270860" lat="51.79463" lng="-113.31593" desc="5.0 KM W OF 21 &amp; 27 TROCHU NJ"/>
+<pinfo refid="50271050" lat="51.64895" lng="-112.80183" desc="5.6 KM W 9 &amp; 27 &amp; 56 MORRIN"/>
+<pinfo refid="50280650" lat="54.04827" lng="-112.98387" desc="3.1 KM E OF 28 &amp; 63 EGREMONT"/>
+<pinfo refid="50280850" lat="54.10063" lng="-112.50438" desc="3.4 KM W OF 28 &amp; 855 SMOKY LAKE"/>
+<pinfo refid="50281010" lat="54.13633" lng="-111.63997" desc="4.6 KM W OF 28 &amp; 36 ASHMONT"/>
+<pinfo refid="50281460" lat="53.99128" lng="-111.34527" desc="5.2 KM W OF 29 &amp; 881 ST PAUL WJ"/>
+<pinfo refid="50281880" lat="54.26805" lng="-110.75702" desc="0.1 KM W OF 28 &amp; 41 IN BONNYVILLE"/>
+<pinfo refid="50282010" lat="54.35547" lng="-110.28458" desc="13.3 KM E OF 28 &amp; 892 ARDMORE"/>
+<pinfo refid="50330850" lat="54.15222" lng="-114.45872" desc="3.7 KM W OF 18 &amp; 33 BARRHEAD NJ"/>
+<pinfo refid="50331050" lat="54.70673" lng="-115.35083" desc="4.0 KM E OF 32 &amp; 33 SWAN HILLS"/>
+<pinfo refid="50340410" lat="55.22900" lng="-118.64261" desc="9.7 KM E OF 2 &amp; 43 GRANDE PRAIRIE"/>
+<pinfo refid="50370210" lat="53.71642" lng="-113.84821" desc="2.0 KM W OF 37 &amp; 44 VILLENEUVE"/>
+<pinfo refid="50370470" lat="53.71615" lng="-113.62270" desc="1.2 KM E OF 2 &amp; 37 NAMAO"/>
+<pinfo refid="50381050" lat="53.89075" lng="-113.06432" desc="2.4 KM E OF 38 &amp; 643 REDWATER"/>
+<pinfo refid="50390650" lat="53.20955" lng="-114.84378" desc="0.7 KM E OF 22 &amp; 39 DRAYTON VALLEY"/>
+<pinfo refid="50390850" lat="53.22098" lng="-114.09377" desc="3.7 KM W OF 39 &amp; 778 THORSBY"/>
+<pinfo refid="50391010" lat="53.26519" lng="-113.61245" desc="3.2 KM W OF 2 &amp; 39 LEDUC"/>
+<pinfo refid="50420860" lat="52.14303" lng="-113.77913" desc="2.4 KM E OF 2 &amp; 42 PENHOLD"/>
+<pinfo refid="50430320" lat="55.18537" lng="-118.80459" desc="0.1 KM W OF 43 &amp; 102 ST, GRANDE PRAIRIE"/>
+<pinfo refid="50430330" lat="55.17057" lng="-118.83046" desc="0.7 KM W OF 40(108 ST) &amp; 43, GRANDE PRAIRIE"/>
+<pinfo refid="50430359" lat="55.22893" lng="-118.82173" desc="1.7 KM W OF 2 &amp; 43, GRANDE PRAIRIE"/>
+<pinfo refid="50431050" lat="54.42895" lng="-116.90743" desc="22.5 KM W OF 43 &amp; 47 FOX CREEK"/>
+<pinfo refid="50431250" lat="54.31441" lng="-116.51088" desc="6.6 KM E OF 43 &amp; 947 FOX CREEK"/>
+<pinfo refid="50431450" lat="54.18370" lng="-115.77533" desc="0.8 KM E OF 32 &amp; 43 WHITECOURT WJ"/>
+<pinfo refid="50431660" lat="54.07538" lng="-115.55015" desc="12.5 KM E OF 32 &amp; 43 WHITECOURT EJ"/>
+<pinfo refid="50431850" lat="53.93907" lng="-115.12123" desc="1.4 KM E OF 22 &amp; 43 MAYERTHORPE"/>
+<pinfo refid="50432050" lat="53.76402" lng="-114.42869" desc="7.2 KM W OF 33 &amp; 43 GUNN"/>
+<pinfo refid="50450450" lat="53.80340" lng="-112.89513" desc="10.7 KM S OF 38 &amp; 45 BRUDERHEIM"/>
+<pinfo refid="50450650" lat="53.72677" lng="-111.82407" desc="5.4 KM W OF 36 &amp; 45 TWO HILLS WJ"/>
+<pinfo refid="50450850" lat="53.71552" lng="-111.66778" desc="1.3 KM E OF 36 &amp; 45 TWO HILLS EJ"/>
+<pinfo refid="50451250" lat="53.51173" lng="-110.01877" desc="0.9 KM W OF 17 &amp; 45 MARWAYNE"/>
+<pinfo refid="50490210" lat="55.77768" lng="-120.00092" desc="ALTA - BC BORDER"/>
+<pinfo refid="50490450" lat="55.78123" lng="-118.88836" desc="2.2 KM W OF 49 &amp; 731 SPIRIT RIVER"/>
+<pinfo refid="50490650" lat="55.75395" lng="-118.68515" desc="0.7 KM E OF 2 &amp; 49 RYCROFT"/>
+<pinfo refid="50490850" lat="55.72332" lng="-117.66752" desc="0.4 KM E OF 49 &amp; 740 WATINO"/>
+<pinfo refid="50500250" lat="52.46300" lng="-113.26760" desc="3.0 KM E OF 12 &amp; 50 TEES"/>
+<pinfo refid="50520250" lat="49.46495" lng="-112.76782" desc="1.3 KM E OF 5 &amp; 52 RAYMOND"/>
+<pinfo refid="50530470" lat="52.63973" lng="-114.23550" desc="0.4 KM E OF 20A &amp; 53 IN RIMBEY"/>
+<pinfo refid="50530650" lat="52.66884" lng="-114.23446" desc="0.5 KM E OF 20 &amp; 53 RIMBEY NJ"/>
+<pinfo refid="50530850" lat="52.67618" lng="-113.62483" desc="1.7 KM W OF 2A &amp; 53 PONOKA"/>
+<pinfo refid="50530870" lat="52.64068" lng="-112.97203" desc="1.3 KM W OF 21 &amp; 53 NJ BASHAW"/>
+<pinfo refid="50540610" lat="52.09356" lng="-114.47181" desc="6.4 KM W OF 54 &amp; 766 RAVEN"/>
+<pinfo refid="50551060" lat="54.73277" lng="-112.83362" desc="1.9 KM W OF 55 &amp; 63 ATHABASCA SJ"/>
+<pinfo refid="50551260" lat="54.82032" lng="-112.54118" desc="2.1 KM E OF 55 &amp; 63 ATMORE NJ"/>
+<pinfo refid="50551450" lat="54.59482" lng="-111.94933" desc="1.5 KM E OF 36 &amp; 55 LAC LA BICHE"/>
+<pinfo refid="50551650" lat="54.44242" lng="-110.80890" desc="3.1 KM W OF 41 &amp; 55 LA COREY"/>
+<pinfo refid="50551850" lat="54.45700" lng="-110.22605" desc="1.4 KM W OF 28 &amp; 55 COLD LAKE"/>
+<pinfo refid="50552010" lat="54.34616" lng="-110.04244" desc="10 KM E OF 28 &amp; 55 CHERRY GROVE SJ"/>
+<pinfo refid="50580650" lat="58.53193" lng="-117.30422" desc="9.9 KM W OF 35 &amp; 58 HIGH LEVEL SJ"/>
+<pinfo refid="50580850" lat="58.51478" lng="-116.96115" desc="9.5 KM E 35 &amp; 58 HIGH LEVEL NJ"/>
+<pinfo refid="50590250" lat="55.37417" lng="-118.78867" desc="1.3 KM W OF 2 &amp; 59 SEXSMITH"/>
+<pinfo refid="50610250" lat="49.52353" lng="-112.51057" desc="0.8 KM E OF 4 &amp; 61 STIRLING"/>
+<pinfo refid="50610450" lat="49.47935" lng="-111.50208" desc="4.4 KM W OF 61 &amp; 879 FOREMOST NJ"/>
+<pinfo refid="50630110" lat="54.82027" lng="-112.66405" desc="5.4 KM W OF 55 &amp; 63 GRASSLAND NJ"/>
+<pinfo refid="50640250" lat="56.31237" lng="-119.99195" desc="11.5 KM W OF 64 &amp; 717 BEAR CANYON"/>
+<pinfo refid="50660250" lat="50.92157" lng="-114.60022" desc="2.9 KM W OF 22 &amp; 66 BRAGG CREEK"/>
+<pinfo refid="50690250" lat="56.64080" lng="-111.24542" desc="6.8 KM E OF 63 &amp; 69 FORT MCMURRAY"/>
+<pinfo refid="50930010" lat="51.25003" lng="-116.01688" desc="6.6 KM S OF 1 &amp; 93 LAKE LOUISE"/>
+<pinfo refid="51100258" lat="52.37586" lng="-114.95317" desc="1.5 KM W OF 11A &amp; 752 ROCKY MOUNTAIN HOUSE"/>
+<pinfo refid="51100418" lat="52.31910" lng="-113.96877" desc="6.0 KM W OF 2 &amp; 11A RED DEER"/>
+<pinfo refid="51602478" lat="53.51177" lng="-112.09625" desc="2.4 KM W OF 16A &amp; 857 VEGREVILLE WJ"/>
+<pinfo refid="51604019" lat="53.56992" lng="-114.03182" desc="2.1 KM W OF 16 &amp; 779 STONY PLAIN"/>
+<pinfo refid="51604259" lat="53.56998" lng="-113.72047" desc="2.8 KM E OF 16 &amp; 60 WINTERBURN"/>
+<pinfo refid="52010210" lat="51.17563" lng="-113.98105" desc="1.4 KM E 2 &amp; 201 CALGARY"/>
+<pinfo refid="52010410" lat="50.90682" lng="-113.92875" desc="1.3 KM E 201 &amp; 52 ST SE CALGARY"/>
+<pinfo refid="52010830" lat="51.15356" lng="-114.12534" desc="0.7 KM W OF BEDDINGTON TRAIL CALGARY"/>
+<pinfo refid="52010850" lat="51.17586" lng="-114.02564" desc="0.3 KM W OF CPR BRIDGE CALGARY"/>
+<pinfo refid="52160210" lat="53.64679" lng="-113.46173" desc="1.5 KM W OF 216 &amp; 66 ST, EDMONTON"/>
+<pinfo refid="52160410" lat="53.43565" lng="-113.43700" desc="0.3 KM E OF 216 &amp; 66 ST IN EDMONTON"/>
+<pinfo refid="52160630" lat="53.45682" lng="-113.61095" desc="0.2 KM E OF SASK BRIDGE"/>
+<pinfo refid="52160640" lat="53.43533" lng="-113.50968" desc="1.2 KM W OF 2 &amp; 216 IN EDMONTON"/>
+<pinfo refid="52160810" lat="53.61016" lng="-113.61288" desc="0.2 KM E OF 216 &amp; 170 ST IN EDMONTON"/>
+<pinfo refid="52200279" lat="50.89418" lng="-114.09994" desc="3.2 KM W OF 2 &amp; 201 SW, CALGARY"/>
+<pinfo refid="52200429" lat="50.90723" lng="-113.86910" desc="7.5 KM E OF 2 &amp; 22X CALGARY EJ"/>
+<pinfo refid="52800468" lat="54.18050" lng="-110.94735" desc="2.8 KM W OF 28 &amp; 41 HOSELAW"/>
+<pinfo refid="54100258" lat="50.03357" lng="-110.53178" desc="0.5 KM W OF 41 &amp; 41A MEDICINE HAT"/>
+<pinfo refid="55340250" lat="50.39717" lng="-113.31445" desc="4.7 KM W OF 23 &amp; 534 VULCAN"/>
+<pinfo refid="55410220" lat="50.40438" lng="-114.52150" desc="0.5 KM E KANANASKIS PARK BOUNDARY"/>
+<pinfo refid="55460220" lat="50.64357" lng="-114.45199" desc="0.8 KM E KANANASKIS PARK BOUNDARY"/>
+<pinfo refid="55470250" lat="50.71790" lng="-113.53670" desc="8.6 KM W 24 &amp; 547 MOSSLEIGH"/>
+<pinfo refid="55550450" lat="50.86295" lng="-110.16632" desc="3.3 KM W 41 &amp; 555 BINDLOSS"/>
+<pinfo refid="55950210" lat="52.23043" lng="-113.43320" desc="4.8 KM E OF 595 &amp; 816 NW DELBURNE"/>
+<pinfo refid="56250260" lat="53.33782" lng="-113.43392" desc="1.2 KM W 625 &amp; 814 BEAUMONT"/>
+<pinfo refid="56400658" lat="56.06945" lng="-118.45085" desc="3.8 KM W 2 &amp; 64A &amp; 732 FAIRVIEW"/>
+<pinfo refid="56590250" lat="54.26797" lng="-110.69667" desc="1.9 KM E 28 &amp; 659 BONNYVILLE"/>
+<pinfo refid="56690250" lat="55.08318" lng="-117.23535" desc="1.2 KM E 49 &amp; 669 VALLEYVIEW"/>
+<pinfo refid="57429920" lat="50.70450" lng="-115.11083" desc="1.4 KM W 40 &amp; 742 PETER LOUGHEED PROV PRK"/>
+<pinfo refid="58812450" lat="56.51903" lng="-111.30652" desc="0.5 KM E 63 &amp; 881 ANZAC"/>
+<pinfo refid="59860260" lat="56.36292" lng="-117.02115" desc="4.1 KM E OF 688 &amp; 986 THREE CREEKS"/>
+<pinfo refid="60020250" lat="49.01767" lng="-113.36765" desc="18.5 KM S OF 2 &amp; 501 CARWAY"/>
+<pinfo refid="60020450" lat="49.22567" lng="-113.29710" desc="1.9 KM N OF 2 &amp; 5 CARDSTON SJ"/>
+<pinfo refid="60020610" lat="49.69902" lng="-113.38886" desc="2.1 KM S OF 2 &amp; 3 FT MACLEOD"/>
+<pinfo refid="60020810" lat="50.07789" lng="-113.60615" desc="7.6 KM N OF 2 &amp; 520 CLARESHOLM"/>
+<pinfo refid="60020890" lat="50.02783" lng="-113.58254" desc="0.8 KM N OF 2 &amp; 520 IN CLARESHOLM"/>
+<pinfo refid="60021060" lat="50.37153" lng="-113.79773" desc="3.1 KM N OF 2 &amp; 533 NANTON NJ"/>
+<pinfo refid="60021210" lat="50.84045" lng="-114.01566" desc="8.3 KM S OF 2A &amp; 22X DEWINTON"/>
+<pinfo refid="60021260" lat="50.66577" lng="-113.85508" desc="4.3 KM S OF 2 &amp; 7 &amp; 547 ALDERSYDE"/>
+<pinfo refid="60021510" lat="51.11785" lng="-114.04619" desc="0.8 KM N OF 2 &amp; 64 AVE, CALGARY"/>
+<pinfo refid="60021520" lat="51.03024" lng="-113.99743" desc="0.8 KM S OF 1A(17 AVE SE) &amp; 2, CALGARY"/>
+<pinfo refid="60021530" lat="50.96085" lng="-114.03042" desc="0.8 KM S OF 2 &amp; SOUTHLAND DR, CALGARY"/>
+<pinfo refid="60021540" lat="50.85689" lng="-113.96941" desc="0.2 KM N OF BOW RIVER BRIDGE, CALGARY"/>
+<pinfo refid="60021810" lat="51.25879" lng="-114.00107" desc="4.6 KM S OF 2 &amp; 567 AIRDRIE"/>
+<pinfo refid="60022250" lat="51.81282" lng="-114.02518" desc="2.0 KM N OF 2 &amp; 27 OLDS"/>
+<pinfo refid="60022410" lat="52.16497" lng="-113.81452" desc="2.6 KM N OF 2 &amp; 42 PENHOLD"/>
+<pinfo refid="60022460" lat="52.24178" lng="-113.83397" desc="5.9 KM S OF 2 &amp; 11 RED DEER"/>
+<pinfo refid="60022610" lat="52.32157" lng="-113.86115" desc="0.1 KM N OF 2 &amp; 11A RED DEER"/>
+<pinfo refid="60022660" lat="52.54035" lng="-113.66995" desc="3.5 KM N OF 2 &amp; 2A LACOMBE"/>
+<pinfo refid="60022850" lat="52.69062" lng="-113.64423" desc="1.7 KM N OF 2 &amp; 53 PONOKA"/>
+<pinfo refid="60023010" lat="53.21376" lng="-113.58569" desc="2.0 KM S OF 2 &amp; OLD 2A LEDUC"/>
+<pinfo refid="60023210" lat="53.38698" lng="-113.51528" desc="5.9 KM N OF 2 &amp; 19 NISKU"/>
+<pinfo refid="60023410" lat="53.68107" lng="-113.64011" desc="4 KM S OF 2 &amp; 37 ST ALBERT"/>
+<pinfo refid="60023660" lat="53.82510" lng="-113.65025" desc="2.8 KM N OF 2 &amp; 642 MORINVILLE"/>
+<pinfo refid="60023850" lat="54.17022" lng="-113.64182" desc="2.1 KM N OF 2 &amp; 18 CLYDE EJ"/>
+<pinfo refid="60024060" lat="54.71590" lng="-113.28688" desc="0.6 KM S OF 2 &amp; 55 IN ATHABASCA"/>
+<pinfo refid="60025680" lat="55.69987" lng="-116.87263" desc="11.0 KM N OF 2 &amp; 679 MCLENNAN"/>
+<pinfo refid="60026010" lat="56.11685" lng="-117.13313" desc="7.6 KM N OF 2 &amp; 683 NAMPA"/>
+<pinfo refid="60026450" lat="56.20892" lng="-117.61063" desc="2.0 KM N OF 2 &amp; 2A GRIMSHAW"/>
+<pinfo refid="60026670" lat="56.02903" lng="-118.39188" desc="4.0 KM S OF 2 &amp; 64A FAIRVIEW"/>
+<pinfo refid="60026810" lat="55.84217" lng="-118.66986" desc="10.0 KM N OF 2 &amp; 49 RYCROFT"/>
+<pinfo refid="60027050" lat="55.71812" lng="-118.69852" desc="4.2 KM S OF 2 &amp; 49 RYCROFT"/>
+<pinfo refid="60027250" lat="55.29612" lng="-118.79442" desc="2.3 KM S OF 2 &amp; 672 SEXSMITH"/>
+<pinfo refid="60040210" lat="49.02090" lng="-111.98710" desc="2.9 KM N OF 4 &amp; 500 COUTTS"/>
+<pinfo refid="60040450" lat="49.45283" lng="-112.42738" desc="2.2 KM S OF 4 &amp; 52 STIRLING"/>
+<pinfo refid="60040690" lat="49.69275" lng="-112.78002" desc="0.5 KM S OF 4 &amp; 512(JAIL ROAD), LETHBRIDGE"/>
+<pinfo refid="60050610" lat="49.43612" lng="-112.84891" desc="0.6 KM N OF 5 &amp; 62 MAGRATH"/>
+<pinfo refid="60060050" lat="49.09118" lng="-113.80900" desc="3.1 KM S OF 5 &amp; 6 WATERTON"/>
+<pinfo refid="60060410" lat="49.13828" lng="-113.85309" desc="3.0 KM N OF 5 &amp; 6 WATERTON"/>
+<pinfo refid="60090210" lat="51.04674" lng="-113.67935" desc="1.1 KM N OF 1 &amp; 9 LANGDON"/>
+<pinfo refid="60090650" lat="51.51777" lng="-112.72388" desc="7.6 KM N OF 9 &amp; 10 DRUMHELLER"/>
+<pinfo refid="60100259" lat="51.10238" lng="-115.08378" desc="0.2 KM S OF 1A &amp; 1X SEEBE"/>
+<pinfo refid="60140450" lat="53.49872" lng="-113.34475" desc="1.7 KM N OF 14 &amp; 216 EDMONTON"/>
+<pinfo refid="60170450" lat="52.83473" lng="-110.05323" desc="0.8 KM S OF 14 &amp; 17 CHAUVIN WJ"/>
+<pinfo refid="60170650" lat="53.18145" lng="-110.00557" desc="10.7 KM S OF 16 &amp; 17 LLOYDMINSTER"/>
+<pinfo refid="60170850" lat="53.32743" lng="-110.00547" desc="5.5 KM N OF 16 &amp; 17 LLOYDMINSTER"/>
+<pinfo refid="60200260" lat="52.35103" lng="-114.07380" desc="3.6 KM N OF 11A &amp; 20 SYLVAN LAKE"/>
+<pinfo refid="60200450" lat="52.47385" lng="-114.07388" desc="1.1 KM N OF 12 &amp; 20 BENTLEY"/>
+<pinfo refid="60200478" lat="50.65422" lng="-113.88237" desc="4.8 KM S OF 2A &amp; 7 ALDERSYDE"/>
+<pinfo refid="60200610" lat="52.94672" lng="-114.39291" desc="2.2 KM S OF 13 &amp; 20 WINFIELD"/>
+<pinfo refid="60200668" lat="50.76313" lng="-113.97495" desc="4.5 KM S OF 2 &amp; 2A N OKOTOKS"/>
+<pinfo refid="60200678" lat="50.72313" lng="-113.98226" desc="2.5 KM N OF 2A &amp; 7 &amp; 783 IN OKOTOKS"/>
+<pinfo refid="60200850" lat="52.99830" lng="-114.44015" desc="4.6 KM N OF 13 &amp; 20 WINFIELD"/>
+<pinfo refid="60201258" lat="51.49533" lng="-114.03075" desc="5.2 KM S OF 2A &amp; 580 CARSTAIRS"/>
+<pinfo refid="60201458" lat="51.75788" lng="-114.09600" desc="4.0 KM S OF 2A &amp; 27 OLDS"/>
+<pinfo refid="60201668" lat="52.15028" lng="-113.87067" desc="0.8 KM N OF 2A &amp; 42 PENHOLD"/>
+<pinfo refid="60201818" lat="52.32912" lng="-113.80831" desc="1.6 KM N OF 2A &amp; 11A RED DEER"/>
+<pinfo refid="60202058" lat="52.50078" lng="-113.69457" desc="4.9 KM N OF 2A &amp; 12 LACOMBE"/>
+<pinfo refid="60202258" lat="52.58702" lng="-113.63348" desc="0.9 KM N OF 2A &amp; 604 MORNINGSIDE"/>
+<pinfo refid="60202418" lat="52.71275" lng="-113.55211" desc="5.5 KM N OF 2A &amp; 53 PONOKA"/>
+<pinfo refid="60202618" lat="53.20646" lng="-113.52527" desc="3.7 KM S OF 2 &amp; 2A LEDUC"/>
+<pinfo refid="60211260" lat="51.04778" lng="-113.26090" desc="1.0 KM N OF 1 &amp; 21 STRATHMORE"/>
+<pinfo refid="60211410" lat="51.72868" lng="-113.24123" desc="2.4 KM N OF 21 &amp; 583 THREE HILLS"/>
+<pinfo refid="60211450" lat="51.45455" lng="-113.23648" desc="7.5 KM N OF 9 &amp; 21 BEISEKER"/>
+<pinfo refid="60211610" lat="52.09739" lng="-113.24314" desc="1.8 KM S OF 21 &amp; 42 LOUSANA"/>
+<pinfo refid="60211850" lat="52.24720" lng="-113.17173" desc="7.8 KM E OF 21 &amp; 595 DELBURNE"/>
+<pinfo refid="60212050" lat="52.56498" lng="-112.99178" desc="2.3 KM S OF 21 &amp; 53 BASHAW SJ"/>
+<pinfo refid="60212270" lat="53.00803" lng="-112.95503" desc="0.8 KM S OF 13 &amp; 21 CAMROSE"/>
+<pinfo refid="60212450" lat="53.06868" lng="-112.95242" desc="6.0 KM N OF 13 &amp; 21 CAMROSE"/>
+<pinfo refid="60212610" lat="53.40995" lng="-113.24603" desc="4.0 KM S OF 14 &amp; 21 SHERWOOD PARK"/>
+<pinfo refid="60212860" lat="53.55001" lng="-113.24634" desc="2.2 KM S OF 16 &amp; 21 SHERWOOD PARK"/>
+<pinfo refid="60220660" lat="49.61523" lng="-114.18187" desc="3.3 KM N OF 3 &amp; 22 LUNDBRECK"/>
+<pinfo refid="60221050" lat="50.27305" lng="-114.20730" desc="2.7 KM S OF 22 &amp; 532 CHAIN LAKES"/>
+<pinfo refid="60221260" lat="50.66660" lng="-114.23278" desc="7.1 KM N OF 22 &amp; 543 HARTELL"/>
+<pinfo refid="60221280" lat="50.68800" lng="-114.27898" desc="1.5 KM N OF 22 &amp; 546 TURNER VALLEY"/>
+<pinfo refid="60221610" lat="51.28061" lng="-114.47026" desc="1.1 KM N OF 22 &amp; 567 COCHRANE"/>
+<pinfo refid="60221850" lat="51.77354" lng="-114.48653" desc="1.6 KM S OF 22 &amp; 27 SUNDRE EJ"/>
+<pinfo refid="60222050" lat="51.79895" lng="-114.66293" desc="0.4 KM N OF 22 &amp; 27 &amp; 584 SUNDRE WJ"/>
+<pinfo refid="60222250" lat="52.22263" lng="-114.85838" desc="10.8 KM S OF 11 &amp; 22 ROCKY MOUNTAIN HOUSE SJ"/>
+<pinfo refid="60222450" lat="52.41543" lng="-114.93698" desc="1.0 KM N OF 11 &amp; 22 ROCKY MOUNTAIN HOUSE NJ"/>
+<pinfo refid="60222650" lat="52.92118" lng="-114.87163" desc="1.2 KM S OF 13 &amp; 22 ALDER FLATS"/>
+<pinfo refid="60223010" lat="53.49428" lng="-114.98458" desc="9.0 KM S OF 16 &amp; 22 ENTWHISTLE"/>
+<pinfo refid="60223250" lat="53.90173" lng="-115.14225" desc="5.0 KM S OF 22 &amp; 43 MAYERTHORPE"/>
+<pinfo refid="60230410" lat="49.84321" lng="-113.08349" desc="4.7 KM N OF 3 &amp; 23 MONARCH"/>
+<pinfo refid="60230660" lat="50.55747" lng="-113.25537" desc="1.6 KM S OF 23 &amp; 24 &amp; 542 VULCAN"/>
+<pinfo refid="60240250" lat="50.58123" lng="-113.25940" desc="1 KM N OF 23 &amp; 24 &amp; 542 VULCAN"/>
+<pinfo refid="60250250" lat="49.74745" lng="-112.89160" desc="3.4 KM N OF 3 &amp; 25 LETHBRIDGE"/>
+<pinfo refid="60250450" lat="50.13000" lng="-112.50703" desc="3.9 KM S OF 25 &amp; 526 ENCHANT"/>
+<pinfo refid="60280210" lat="53.73835" lng="-113.49617" desc="2.5 KM N OF 28 &amp; 37 NAMAO"/>
+<pinfo refid="60280450" lat="53.90257" lng="-113.32263" desc="6.4 KM N OF 28 &amp; 28A GIBBONS"/>
+<pinfo refid="60281250" lat="54.10047" lng="-111.57833" desc="2.6 KM S OF 28 &amp; 36 ASHMONT"/>
+<pinfo refid="60281650" lat="53.98157" lng="-110.89227" desc="0.5 KM N OF 29 &amp; 41 ELK POINT"/>
+<pinfo refid="60321050" lat="54.04912" lng="-115.83530" desc="15.7 KM S OF 32 &amp; 43 WHITECOURT EJ"/>
+<pinfo refid="60321250" lat="54.64133" lng="-115.38312" desc="8.1 KM S OF 32 &amp; 33 SWAN HILLS"/>
+<pinfo refid="60330450" lat="53.75243" lng="-114.33665" desc="2.2 KM N OF 33 &amp; 43 GUNN"/>
+<pinfo refid="60330650" lat="54.08282" lng="-114.40190" desc="4.4 KM S OF 18 &amp; 33 BARRHEAD SJ"/>
+<pinfo refid="60331250" lat="54.75077" lng="-115.38870" desc="5.0 KM N OF 32 &amp; 33 SWAN HILLS"/>
+<pinfo refid="60331450" lat="55.27582" lng="-115.36048" desc="4.5 KM S OF 2 &amp; 33 KINUSO"/>
+<pinfo refid="60350410" lat="56.27626" lng="-117.62866" desc="4.0 KM N OF 2 &amp; 35 GRIMSHAW"/>
+<pinfo refid="60350650" lat="56.88303" lng="-117.62472" desc="3.7 KM S OF 35 &amp; 691 MANNING"/>
+<pinfo refid="60351250" lat="57.96753" lng="-117.45969" desc="7.9 KM S OF 35 &amp; 697 PADDLE PRAIRIE"/>
+<pinfo refid="60351450" lat="58.48407" lng="-117.17502" desc="3.2 KM S OF 35 &amp; 58 HIGH LEVEL SJ"/>
+<pinfo refid="60351610" lat="58.64147" lng="-117.17615" desc="14.6 KM N OF 35 &amp; 58 HIGH LEVEL NJ"/>
+<pinfo refid="60360260" lat="49.50762" lng="-112.20278" desc="1.9 KM S OF 36 &amp; 61 WRENTHAM"/>
+<pinfo refid="60360450" lat="49.82965" lng="-112.12727" desc="4.8 KM N OF 3 &amp; 36 TABER EJ"/>
+<pinfo refid="60360610" lat="50.53763" lng="-112.01746" desc="11.3 KM S OF 1 &amp; 36 BROOKS"/>
+<pinfo refid="60360850" lat="50.88672" lng="-111.91358" desc="1.5 KM S OF 36 &amp; 556 ROSEMARY"/>
+<pinfo refid="60361050" lat="51.60235" lng="-111.79522" desc="2.3 KM S OF 9 &amp; 36 HANNA EJ"/>
+<pinfo refid="60361250" lat="51.67078" lng="-111.84793" desc="5.7 KM N OF 9 &amp; 36 HANNA WJ"/>
+<pinfo refid="60361460" lat="52.59235" lng="-111.82835" desc="1.4 KM N 36 &amp; 53 &amp; 608 FORESTBURG"/>
+<pinfo refid="60361650" lat="52.80397" lng="-111.84210" desc="1.2 KM N OF 13 &amp; 36 KILLAM"/>
+<pinfo refid="60361850" lat="53.10672" lng="-111.78450" desc="1.5 KM N OF 14 &amp; 36 VIKING"/>
+<pinfo refid="60362010" lat="53.66112" lng="-111.77094" desc="6.9 KM S OF 36 &amp; 45 TWO HILLS WJ"/>
+<pinfo refid="60362250" lat="53.72845" lng="-111.68803" desc="1.4 KM N OF 36 &amp; 45 TWO HILLS EJ"/>
+<pinfo refid="60362650" lat="54.71987" lng="-111.97183" desc="6.0 KM S OF 36 &amp; 55 LAC LA BICHE NJ"/>
+<pinfo refid="60401210" lat="51.05435" lng="-115.01395" desc="5.0 KM S OF 1 &amp; 40 BARRIER LAKE"/>
+<pinfo refid="60402850" lat="53.33273" lng="-117.60142" desc="5.0 KM S OF 16 &amp; 40 HINTON EJ"/>
+<pinfo refid="60403050" lat="53.36892" lng="-117.65568" desc="1.3 KM N OF 16 &amp; 40 HINTON WJ"/>
+<pinfo refid="60403250" lat="53.85356" lng="-118.58208" desc="11.6 KM SE 40 &amp; FORESTRY TRUNK RD"/>
+<pinfo refid="60403450" lat="53.91643" lng="-119.03789" desc="25.1 KM W 40 &amp; FORESTRY TRUNK RD"/>
+<pinfo refid="60403650" lat="54.06332" lng="-119.01688" desc="24 KM N OF 40 &amp; SMOKY RIVER GRANDE CACHE"/>
+<pinfo refid="60404060" lat="54.82390" lng="-118.69357" desc="35 KM S OF 40 &amp; 666 GRANDE PRAIRIE"/>
+<pinfo refid="60404230" lat="55.12691" lng="-118.81997" desc="4.9 KM S OF 2 &amp; 40 GRANDE PRAIRIE"/>
+<pinfo refid="60410350" lat="49.51525" lng="-110.26420" desc="21.0 KM S OF 41 &amp; 514 ELKWATER"/>
+<pinfo refid="60410410" lat="49.92422" lng="-110.34599" desc="3.6 KM S OF 1 &amp; 41 IRVINE"/>
+<pinfo refid="60410650" lat="50.04117" lng="-110.51573" desc="1.0 KM N OF 41 &amp; 41A MEDICINE HAT"/>
+<pinfo refid="60410850" lat="50.68338" lng="-110.09737" desc="2.7 KM N OF 41 &amp; 545 MCNEILL"/>
+<pinfo refid="60411050" lat="51.32530" lng="-110.42540" desc="8.4 KM S OF 9 &amp; 41 OYEN"/>
+<pinfo refid="60411260" lat="51.95402" lng="-110.50103" desc="5.0 KM S OF 12 &amp; 41 MONITOR"/>
+<pinfo refid="60411450" lat="52.03223" lng="-110.76670" desc="3.0 KM N OF 12 &amp; 41 CONSORT"/>
+<pinfo refid="60411650" lat="52.49953" lng="-110.82092" desc="1.2 KM N OF 13 &amp; 41 CZAR"/>
+<pinfo refid="60411850" lat="52.96560" lng="-110.82963" desc="0.7 KM N OF 41 &amp; 614 WAINWRIGHT SJ"/>
+<pinfo refid="60412250" lat="53.67178" lng="-110.87980" desc="1.8 KM N OF 41 &amp; 45 DERWENT NJ"/>
+<pinfo refid="60412410" lat="54.42764" lng="-110.76203" desc="1.7 KM S OF 41 &amp; 55 LA COREY"/>
+<pinfo refid="60430310" lat="55.21030" lng="-118.79468" desc="1.0 KM N OF 2 &amp; 132 AVE, GRANDE PRAIRIE"/>
+<pinfo refid="60430350" lat="55.19352" lng="-118.93526" desc="2.7 KM N OF 43 &amp; 100 AVE, GRANDE PRAIRIE"/>
+<pinfo refid="60430450" lat="55.48683" lng="-117.13132" desc="2.7 KM N OF 2A &amp; 49 GUY"/>
+<pinfo refid="60430650" lat="55.09313" lng="-117.25545" desc="1.1 KM N OF 49 &amp; 669 VALLEYVIEW"/>
+<pinfo refid="60430810" lat="54.96785" lng="-117.28085" desc="3.1 KM S OF 43 &amp; 665 VALLEYVIEW"/>
+<pinfo refid="60432210" lat="53.57870" lng="-114.22277" desc="0.8 KM N OF 16 &amp; 43 CARVEL CORNER"/>
+<pinfo refid="60440210" lat="54.21476" lng="-113.85041" desc="7.0 KM N OF 18 &amp; 44 WESTLOCK"/>
+<pinfo refid="60440450" lat="54.99760" lng="-114.04042" desc="3.5 KM S OF 2 &amp; 44 HONDO"/>
+<pinfo refid="60470650" lat="53.53473" lng="-116.59893" desc="4.2 KM S OF 16 &amp; 47 EDSON"/>
+<pinfo refid="60560650" lat="51.04682" lng="-112.64138" desc="1.2 KM N OF 56 &amp; 561 HUSSAR NJ"/>
+<pinfo refid="60560850" lat="51.36887" lng="-112.63012" desc="4.7 KM S OF 10 &amp; 56 DRUMHELLER EJ"/>
+<pinfo refid="60561050" lat="51.66583" lng="-112.72153" desc="1.9 KM N OF 9 &amp; 27 &amp; 56 MORRIN"/>
+<pinfo refid="60561450" lat="52.33935" lng="-112.69192" desc="3.4 KM N OF 12 &amp; 56 STETTLER"/>
+<pinfo refid="60561650" lat="52.97587" lng="-112.71328" desc="0.5 KM S OF 13 &amp; 56 CAMROSE"/>
+<pinfo refid="60600210" lat="53.43890" lng="-113.76313" desc="1.7 KM S OF 60 &amp; 627 DEVON"/>
+<pinfo refid="60620250" lat="49.00648" lng="-112.78827" desc="2.4 KM S OF 62 &amp; 501 DEL BONITA"/>
+<pinfo refid="60630050" lat="54.06308" lng="-113.02563" desc="3.0 KM N OF 28 &amp; 63 EGREMONT"/>
+<pinfo refid="60630210" lat="54.88558" lng="-112.54762" desc="8.0 KM N OF 55 &amp; 63 ATMORE NJ"/>
+<pinfo refid="60630220" lat="55.22852" lng="-112.46827" desc="4.0 KM N OF WANDERING RIVER"/>
+<pinfo refid="60630610" lat="55.92626" lng="-112.06488" desc="MARIANA LAKE"/>
+<pinfo refid="60631010" lat="56.73235" lng="-111.40299" desc="0.1 KM N OF 63 &amp; ATHABASCA RIVER BRIDGE, FORT MCMURRAY"/>
+<pinfo refid="60631020" lat="56.69043" lng="-111.35432" desc="0.4 KM N OF 63 &amp; BEACON HILL DRIVE, FORT MCMURRAY"/>
+<pinfo refid="60631060" lat="56.59492" lng="-111.32433" desc="7.4 KM S OF 63 &amp; 69 FORT MCMURRAY"/>
+<pinfo refid="60631210" lat="56.77432" lng="-111.42572" desc="15.4 KM N OF 63 &amp; 69 FORT MCMURRAY"/>
+<pinfo refid="60631230" lat="56.84979" lng="-111.44119" desc="10.8 KM N OF 63 &amp; CONFEDERATION WAY FORT MCMURRAY"/>
+<pinfo refid="60631410" lat="57.15276" lng="-111.59486" desc="2.4 KM N OF PETER LOUGHEED BRIDGE"/>
+<pinfo refid="60640450" lat="56.34503" lng="-118.69322" desc="1.5 KM S OF 64 &amp; 730 HINES CREEK"/>
+<pinfo refid="60640650" lat="56.17457" lng="-118.50907" desc="12.0 KM N OF 64 &amp; 64A FAIRVIEW"/>
+<pinfo refid="60680450" lat="51.12757" lng="-114.69565" desc="0.4 KM S OF 1 &amp; 68 SIBBALD TRAIL"/>
+<pinfo refid="60880260" lat="55.51523" lng="-114.88740" desc="3.0 KM S OF 88 &amp; 754 SLAVE LAKE"/>
+<pinfo refid="60880650" lat="56.09030" lng="-115.35135" desc="2.3 KM N OF 88 &amp; 750 RED EARTH"/>
+<pinfo refid="61400259" lat="53.52530" lng="-113.34501" desc="1.6 KM S OF 216 &amp; BASELINE RD EDMONTON"/>
+<pinfo refid="61602068" lat="53.55206" lng="-113.34440" desc="1.4 KM N OF 216 &amp; BASELINE RD EDMONTON"/>
+<pinfo refid="62010450" lat="50.99613" lng="-113.92159" desc="1.8 KM N OF 201 &amp; GLENMORE TR CALGARY"/>
+<pinfo refid="62010650" lat="50.99039" lng="-114.16708" desc="0.2 KM S OF 201 &amp; ELBOW RIVER CALGARY"/>
+<pinfo refid="62010670" lat="51.03946" lng="-114.23254" desc="0.1 KM N 17 AVE SW &amp; STONEY TRAIL CALGARY"/>
+<pinfo refid="62010810" lat="51.10133" lng="-114.22935" desc="0.1 KM N OF BOW RIVER BRIDGE"/>
+<pinfo refid="62160250" lat="53.62493" lng="-113.37075" desc="1.1 KM N OF 216 &amp; 153 AVE NW, EDMONTON"/>
+<pinfo refid="62160610" lat="53.56567" lng="-113.66036" desc="0.9 KM S OF 216 &amp; YELLOWHEAD TRAIL IN EDMONTON"/>
+<pinfo refid="62160620" lat="53.53227" lng="-113.65892" desc="0.6 KM N OF 216 &amp; 87 AVE IN EDMONTON"/>
+<pinfo refid="62800358" lat="53.75518" lng="-113.32268" desc="4.5 KM N OF 28A &amp; 37 FORT SASKATCHEWAN"/>
+<pinfo refid="65050210" lat="49.33718" lng="-113.58979" desc="8.0 KM W OF 505 &amp; 810 GLENWOOD"/>
+<pinfo refid="67330250" lat="55.24418" lng="-118.38495" desc="1.4 KM N OF 43 &amp; 733 BEZANSON"/>
+<pinfo refid="67429980" lat="51.08170" lng="-115.37756" desc="0.95 KM N OF 742 &amp; OLYMPIC WAY CANMORE"/>
+<pinfo refid="67640250" lat="53.82888" lng="-114.67133" desc="0.9 KM N OF 43 &amp; 764 CHERHILL"/>
+<pinfo refid="67780210" lat="53.14811" lng="-114.05054" desc="9.6 KM S OF 39 &amp; 778 THORSBY"/>
+<pinfo refid="67940210" lat="53.62818" lng="-113.81212" desc="3.4 KM S OF 44 &amp; 633 VILLENUEVE"/>
+<pinfo refid="67940410" lat="54.12813" lng="-113.85100" desc="2.6 KM S OF 18 &amp; 44 WESTLOCK"/>
+<pinfo refid="68130250" lat="54.76643" lng="-113.31068" desc="6.5 KM N 55 &amp; 813 ATHABASCA"/>
+<pinfo refid="68140270" lat="53.33077" lng="-113.41532" desc="0.8 KM S 625 &amp; 814 BEAUMONT"/>
+<pinfo refid="68311010" lat="54.34266" lng="-112.80079" desc="27.0 KM S OF BOYLE"/>
+<pinfo refid="68510650" lat="51.68108" lng="-112.39117" desc="3.5 KM N 9 &amp; 851 DELIA WJ"/>
+<pinfo refid="68550810" lat="52.69109" lng="-112.22928" desc="12.9 KM N OF 53 &amp; 855 HEISLER"/>
+<pinfo refid="68790410" lat="49.79132" lng="-111.44978" desc="5.0 KM S OF 3 &amp; 879 BOW ISLAND"/>
+<pinfo refid="68812050" lat="55.00534" lng="-111.73738" desc="16.5 KM N 858 &amp; 881 IMPERIAL MILLS"/>
+<pinfo refid="68940210" lat="52.80208" lng="-110.46347" desc="4.7 KM N OF 610 &amp; 894 EDGERTON"/>
+<pinfo refid="68970410" lat="53.47582" lng="-110.32518" desc="4.7 KM S 45 &amp; 897 MARWAYNE"/>
+</ATRPoints>
